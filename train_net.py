@@ -22,7 +22,6 @@ from alphaction.structures.memory_pool import MemoryPool
 # pytorch issuse #973
 import resource
 
-
 rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
 resource.setrlimit(resource.RLIMIT_NOFILE, (rlimit[1], rlimit[1]))
 
@@ -240,6 +239,7 @@ def main():
     # do final testing.
     if not args.skip_test:
         run_test(cfg, model, args.distributed)
+
 
 if __name__ == "__main__":
     main()

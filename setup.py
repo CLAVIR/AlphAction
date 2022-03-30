@@ -103,7 +103,7 @@ def get_extensions():
 setup(
     name="alphaction",
     author="yelantf",
-    url="https://github.com/MVIG-SJTU/AlphAction",
+    url="https://github.com/CLAVIR/AlphAction",
     ext_modules=get_extensions(),
     packages=find_packages(".", exclude=[
         "config_files", "demo", "gifs", "tools", "data",
