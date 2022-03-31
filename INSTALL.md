@@ -17,18 +17,17 @@ We recommend to setup the environment with Anaconda,
 the step-by-step installation script is shown below.
 
 ```bash
-conda create -n alphaction python=3.7
-conda activate alphaction
+python3 -m venv venv
+venv/bin/activate
 
-# install pytorch with the same cuda version as in your environment
-cuda_version=$(nvcc --version | grep -oP '(?<=release )[\d\.]*?(?=,)')
-conda install pytorch torchvision cudatoolkit=$cuda_version -c pytorch
+# install pytorch with the similar cuda version as in your environment
+# go to pytorch site to find the install link, for example cu113
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/<cuda_version>
 
-conda install av -c conda-forge
-conda install cython
+pip3 install av
+pip3 install cython
 
-git clone https://github.com/MVIG-SJTU/AlphAction.git
+# download AlphAction code
 cd AlphAction
 pip install -e .    # Other dependicies will be installed here
-
 ```
