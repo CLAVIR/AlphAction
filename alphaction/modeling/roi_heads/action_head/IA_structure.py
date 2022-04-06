@@ -26,16 +26,16 @@ class InteractionBlock(nn.Module):
         bias = not structure_config.NO_BIAS
         init_std = structure_config.CONV_INIT_STD
 
-        self.query = nn.Conv3d(dim_person, dim_inner, 1, bias)
+        self.query = nn.Conv3d(dim_person, dim_inner, kernel_size=1, bias=bias)
         init_layer(self.query, init_std, bias)
 
-        self.key = nn.Conv3d(dim_other, dim_inner, 1, bias)
+        self.key = nn.Conv3d(dim_other, dim_inner, kernel_size=1, bias=bias)
         init_layer(self.key, init_std, bias)
 
-        self.value = nn.Conv3d(dim_other, dim_inner, 1, bias)
+        self.value = nn.Conv3d(dim_other, dim_inner, kernel_size=1, bias=bias)
         init_layer(self.value, init_std, bias)
 
-        self.out = nn.Conv3d(dim_inner, dim_out, 1, bias)
+        self.out = nn.Conv3d(dim_inner, dim_out, kernel_size=1, bias=bias)
         if structure_config.USE_ZERO_INIT_CONV:
             out_init = 0
         else:
@@ -49,7 +49,7 @@ class InteractionBlock(nn.Module):
         self.use_ln = structure_config.LAYER_NORM
 
         if dim_person != dim_out:
-            self.shortcut = nn.Conv3d(dim_person, dim_out, 1, bias)
+            self.shortcut = nn.Conv3d(dim_person, dim_out, kernel_size=1, bias=bias)
             init_layer(self.shortcut, init_std, bias)
         else:
             self.shortcut = None
@@ -82,14 +82,14 @@ class InteractionBlock(nn.Module):
                                                     w_others)
             key_batch = key_batch + self.temporal_position_k
             key_batch = key_batch.contiguous().view(n, self.max_others, self.dim_inner, t_others,
-                                                                    h_others, w_others)
+                                                    h_others, w_others)
 
             value_batch = value_batch.contiguous().view(n, self.temp_pos_len, max_person_per_sec, self.dim_inner,
                                                         t_others,
                                                         h_others, w_others)
             value_batch = value_batch + self.temporal_position_v
             value_batch = value_batch.contiguous().view(n, self.max_others, self.dim_inner, t_others,
-                                                                        h_others, w_others)
+                                                        h_others, w_others)
 
         query_batch = query_batch.contiguous().view(n, self.dim_inner, -1).transpose(1, 2)  # [n, thw, dim_inner]
         key_batch = key_batch.contiguous().view(n, self.max_others, self.dim_inner, -1).transpose(2, 3)
@@ -150,18 +150,19 @@ class IAStructure(nn.Module):
         self.has_O = has_object(structure_cfg)
         self.has_M = has_memory(structure_cfg)
 
-        self.person_dim_reduce = nn.Conv3d(dim_person, self.dim_inner, 1, bias)  # reduce person query
+        self.person_dim_reduce = nn.Conv3d(dim_person, self.dim_inner, kernel_size=1, bias=bias)  # reduce person query
         init_layer(self.person_dim_reduce, conv_init_std, bias)
         self.reduce_dropout = nn.Dropout(structure_cfg.DROPOUT)
 
         if self.has_M:
-            self.mem_dim_reduce = nn.Conv3d(dim_mem, self.dim_inner, 1, bias)
+            self.mem_dim_reduce = nn.Conv3d(dim_mem, self.dim_inner, kernel_size=1, bias=bias)
             init_layer(self.mem_dim_reduce, conv_init_std, bias)
         if self.has_P:
-            self.person_key_dim_reduce = nn.Conv3d(dim_person, self.dim_inner, 1, bias)  # reduce person key
+            self.person_key_dim_reduce = nn.Conv3d(dim_person, self.dim_inner, kernel_size=1,
+                                                   bias=bias)  # reduce person key
             init_layer(self.person_key_dim_reduce, conv_init_std, bias)
         if self.has_O:
-            self.object_dim_reduce = nn.Conv3d(dim_person, self.dim_inner, 1, bias)
+            self.object_dim_reduce = nn.Conv3d(dim_person, self.dim_inner, kernel_size=1, bias=bias)
             init_layer(self.object_dim_reduce, conv_init_std, bias)
 
     def forward(self, person, person_boxes, obj_feature, object_boxes, mem_feature, ):
