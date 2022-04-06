@@ -17,16 +17,13 @@ We recommend to setup the environment with Anaconda,
 the step-by-step installation script is shown below.
 
 ```bash
-python3.8 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 
 pip3 install cython
 pip3 install wheel
 
-# install pytorch with the similar cuda version as in your environment
-# go to pytorch site to find the install link, for example cu113
-# it seems we can only use pytorch 1.10.0 for now
-pip3 install torch==1.10.0 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/<cuda_version>
+pip3 install torch==1.4.0 torchvision==0.5.0
 pip3 install av
 
 # download AlphAction code
