@@ -26,6 +26,8 @@ pip3 install wheel
 pip3 install torch==1.4.0 torchvision==0.5.0
 pip3 install av
 
+python3 -m pip install --upgrade pip
+
 # download AlphAction code
 cd AlphAction
 pip install -e .    # Other dependicies will be installed here
