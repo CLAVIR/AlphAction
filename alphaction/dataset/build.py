@@ -12,6 +12,7 @@ from . import samplers
 from .collate_batch import BatchCollator
 from .transforms import build_transforms, build_object_transforms
 
+
 def build_dataset(cfg, dataset_list, transforms, dataset_catalog, is_train=True, object_transforms=None):
     """
     Arguments:
@@ -33,11 +34,13 @@ def build_dataset(cfg, dataset_list, transforms, dataset_catalog, is_train=True,
         data = dataset_catalog.get(dataset_name)
         factory = getattr(D, data["factory"])
         args = data["args"]
+        # TODO hardcoded is_train since we provide object bbs anyway.
+        is_train = True
         if data["factory"] == "AVAVideoDataset":
             # for AVA, we want to remove clips without annotations
             # during training
             args["remove_clips_without_annotations"] = is_train
-            args["frame_span"] = cfg.INPUT.FRAME_NUM*cfg.INPUT.FRAME_SAMPLE_RATE
+            args["frame_span"] = cfg.INPUT.FRAME_NUM * cfg.INPUT.FRAME_SAMPLE_RATE
             if not is_train:
                 args["box_thresh"] = cfg.TEST.BOX_THRESH
                 args["action_thresh"] = cfg.TEST.ACTION_THRESH

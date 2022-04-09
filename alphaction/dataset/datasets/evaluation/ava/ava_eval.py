@@ -193,12 +193,12 @@ def evaluate_predictions_on_ava(eval_file_paths, ava_results, csv_result_file, l
 
     groundtruth = eval_file_paths["csv_gt_file"]
     labelmap = eval_file_paths["labelmap_file"]
-    exclusions = eval_file_paths["exclusion_file"]
+    # exclusions = eval_file_paths["exclusion_file"]
 
     categories, class_whitelist = read_labelmap(labelmap)
     logger.info("CATEGORIES (%d):\n%s", len(categories),
                 pformat(categories, indent=2))
-    excluded_keys = read_exclusions(exclusions)
+    # excluded_keys = read_exclusions(exclusions)
 
     pascal_evaluator = object_detection_evaluation.PascalDetectionEvaluator(
         categories)
@@ -207,10 +207,10 @@ def evaluate_predictions_on_ava(eval_file_paths, ava_results, csv_result_file, l
     boxes, labels, _ = read_csv(groundtruth, logger, class_whitelist)
     start = time.time()
     for image_key in boxes:
-        if image_key in excluded_keys:
-            logger.info(("Found excluded timestamp in ground truth: %s. "
-                         "It will be ignored."), image_key)
-            continue
+        # if image_key in excluded_keys:
+        #     logger.info(("Found excluded timestamp in ground truth: %s. "
+        #                  "It will be ignored."), image_key)
+        #     continue
         pascal_evaluator.add_single_ground_truth_image_info(
             image_key, {
                 standard_fields.InputDataFields.groundtruth_boxes:
@@ -226,10 +226,10 @@ def evaluate_predictions_on_ava(eval_file_paths, ava_results, csv_result_file, l
     boxes, labels, scores = read_csv(csv_result_file, logger, class_whitelist)
     start = time.time()
     for image_key in boxes:
-        if image_key in excluded_keys:
-            logger.info(("Found excluded timestamp in detections: %s. "
-                         "It will be ignored."), image_key)
-            continue
+        # if image_key in excluded_keys:
+        #     logger.info(("Found excluded timestamp in detections: %s. "
+        #                  "It will be ignored."), image_key)
+        #     continue
         pascal_evaluator.add_single_detected_image_info(
             image_key, {
                 standard_fields.DetectionResultFields.detection_boxes:
