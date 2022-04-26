@@ -1,0 +1,6 @@
+Not correct:  (141, 338, ({'spoon', 'stir', 'butter', 'bowl'}, {'person0'})) A
+Not correct:  (2060, 2223, ({'olive oil', 'frying pan', 'heat'}, {'person0'})) OO
+Not correct:  (3041, 3153, ({'cooking pot', 'spatula', 'stir'}, {'person1'})) HO
+Not correct:  (3685, 3961, ({'knife', 'egg', 'cut'}, {'person0'})) OO
+Not correct:  (3961, 4719, ({'lemon', 'stir', 'holding', 'cooking pot', 'spatula'}, {'person0', 'person1'})) A
+Not correct:  (5060, 5281, ({'plate', 'patty', 'transfer', 'cup'}, {'person0'})) A

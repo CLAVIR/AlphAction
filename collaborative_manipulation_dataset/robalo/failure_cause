@@ -1,0 +1,14 @@
+Not correct:  (612, 1439, ({'fish', 'holding', 'plate', 'transfer', 'board'}, {'person0', 'person1'})) HO
+Not correct:  (1279, 1960, ({'knife', 'fish', 'holding', 'cut', 'board'}, {'person0', 'person1'})) HO
+Not correct:  (4157, 4449, ({'lemon', 'transfer', 'cooking pot', 'board'}, {'person0'})) OO
+Not correct:  (4449, 4581, ({'squeeze', 'mixture', 'board', 'spoon'}, {'person1'})) HO
+Not correct:  (5270, 5418, ({'lemon', 'squeeze', 'board', 'spoon'}, {'person1'})) HO
+Not correct:  (5270, 5418, ({'board', 'lemon', 'knife', 'cut'}, {'person1'})) HO
+Not correct:  (6976, 7081, ({'lemon', 'spatula', 'board', 'stir'}, {'person1'})) HO
+Not correct:  (7081, 7209, ({'lemon', 'spatula', 'board', 'stir'}, {'person0'})) OO
+Not correct:  (7209, 7380, ({'board', 'lemon', 'knife', 'cut'}, {'person1'})) HO
+Not correct:  (7380, 7542, ({'lemon', 'spatula', 'board', 'stir'}, {'person1'})) OO
+Not correct:  (8078, 8191, ({'fish', 'dip', 'spatula', 'rectangular plate'}, {'person0'})) A
+Not correct:  (8078, 8191, ({'rectangular plate', 'sprinkle', 'spoon'}, {'person0'})) A
+Not correct:  (8078, 8191, ({'fish', 'dip', 'rectangular plate', 'spoon'}, {'person1'})) A
+Not correct:  (8191, 8315, ({'rectangular plate', 'sprinkle', 'spoon'}, {'person1'})) A

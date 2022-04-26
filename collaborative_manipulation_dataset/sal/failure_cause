@@ -1,0 +1,10 @@
+Not correct:  (824, 926, ({'bowl', 'mixture', 'cut', 'knife'}, {'person0'})) OO
+Not correct:  (1800, 2055, ({'stir', 'spoon', 'cooking pot'}, {'person0'})) A
+Not correct:  (2962, 3130, ({'olive oil', 'pour', 'cooking pot'}, {'person0'})) HO
+Not correct:  (3130, 3297, ({'spatula', 'stir', 'cooking pot'}, {'person0'})) A
+Not correct:  (4213, 4432, ({'board', 'cabbage', 'toothpick', 'wrap'}, {'person0'})) A
+Not correct:  (4213, 4432, ({'board', 'cabbage', 'toothpick', 'wrap'}, {'person1'})) A
+Not correct:  (4947, 5049, ({'white wine', 'stir', 'cooking pot'}, {'person0'})) A
+Not correct:  (6677, 6798, ({'spatula', 'stir', 'cooking pot'}, {'person0'})) A
+Not correct:  (6926, 7030, ({'spatula', 'cabbage', 'stir', 'plate'}, {'person0'})) A
+Not correct:  (7030, 7213, ({'stir', 'spoon', 'cooking pot'}, {'person0'})) A

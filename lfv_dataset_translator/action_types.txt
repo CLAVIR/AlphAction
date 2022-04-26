@@ -1,0 +1,12 @@
+cut:1
+holding:2
+handover:3
+squeeze:4
+sprinkle:5
+transfer:6
+pour:7
+heat:8
+stir:9
+wrap:10
+roll:11
+dip:12

@@ -124,6 +124,7 @@ def multiprocess_wrapper(args):
     args, kwargs = args
     return slice_movie_yuv(*args, **kwargs)
 
+
 def main():
     parser = argparse.ArgumentParser(description="Script for processing AVA videos.")
     parser.add_argument(
@@ -169,6 +170,7 @@ def main():
             total=len(movie_path_list)):
         if ret_msg != "":
             tqdm.tqdm.write(ret_msg)
+
 
 if __name__ == '__main__':
     main()

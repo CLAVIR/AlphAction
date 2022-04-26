@@ -1,0 +1,7 @@
+Not correct:  (793, 893, ({'red pepper', 'bowl', 'spoon', 'transfer', 'mixing bowl'}, {'person1'})) HO
+Not correct:  (893, 1001, ({'transfer', 'bowl', 'mixing bowl', 'tomato'}, {'person0'})) OO
+Not correct:  (893, 1001, ({'spoon', 'mixing bowl', 'stir'}, {'person1'})) OO
+Not correct:  (1001, 1163, ({'bowl', 'spoon', 'stir'}, {'person1'})) OO
+Not correct:  (1313, 1587, ({'spoon', 'mixing bowl', 'vegetables', 'stir'}, {'person0'})) HO
+Not correct:  (4103, 4203, ({'baking dish', 'pour', 'olive oil'}, {'person0'})) OO
+Not correct:  (4203, 4336, ({'handover', 'salt'}, {'person1', 'person0'})) HO

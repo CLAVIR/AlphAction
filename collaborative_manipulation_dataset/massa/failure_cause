@@ -1,0 +1,8 @@
+Not correct:  (342, 447, ({'lemon', 'transfer', 'board', 'pepper', 'plate'}, {'person0'})) OO
+Not correct:  (988, 1147, ({'stir', 'spoon', 'bowl', 'garlic'}, {'person1'})) A
+Not correct:  (988, 1147, ({'lemon', 'squeeze', 'pepper'}, {'person0'})) HO
+Not correct:  (3144, 3494, ({'transfer', 'cooking pot', 'board', 'knife', 'meat'}, {'person1'})) A
+Not correct:  (3144, 3271, ({'transfer', 'cooking pot', 'board', 'fork', 'meat'}, {'person1'})) A
+Not correct:  (4072, 4328, ({'stir', 'cooking pot', 'pepper'}, {'person1'})) A
+Not correct:  (4203, 4328, ({'stir', 'cooking pot', 'pepper'}, {'person0'})) HO
+Not correct:  (5330, 5762, ({'milk', 'frying pan', 'heat'}, {'person1'})) OO

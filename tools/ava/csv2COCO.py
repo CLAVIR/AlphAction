@@ -333,7 +333,13 @@ def convert_csv2coco(video_name, title):
     else:
         min_json_path = min_json_path_temp
     root = '../../'
-    my_csv2COCOJson(root + csv_path, root + movie_list, root + img_root, root + json_path, root + min_json_path)
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    abs_csv_path = os.path.join(root_dir, csv_path)
+    abs_movie_list = os.path.join(root_dir, movie_list)
+    abs_img_root = os.path.join(root_dir, img_root)
+    abs_json_path = os.path.join(root_dir, json_path)
+    abs_min_json_path = os.path.join(root_dir, min_json_path)
+    my_csv2COCOJson(abs_csv_path, abs_movie_list, abs_img_root, abs_json_path, abs_min_json_path)
 
 
 def main2():
