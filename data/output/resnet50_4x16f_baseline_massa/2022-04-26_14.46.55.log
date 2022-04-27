@@ -1,0 +1,1244 @@
+2022-04-26 14:46:55,070 alphaction INFO: Using 1 GPUs
+2022-04-26 14:46:55,070 alphaction INFO: Namespace(adjust_lr=False, config_file='/root/baseline_zoo/AlphAction/config_files/massa.yaml', distributed=False, local_rank=0, no_head=True, opts=['SOLVER.BASE_LR', '0.000125', 'SOLVER.STEPS', '(560000, 720000)', 'SOLVER.MAX_ITER', '880000', 'SOLVER.VIDEOS_PER_BATCH', '2', 'TEST.VIDEOS_PER_BATCH', '2'], seed=2, skip_test=False, skip_val=False, tfboard=True, transfer_weight=True)
+2022-04-26 14:46:55,070 alphaction INFO: Collecting env info (might take some time)
+2022-04-26 14:46:55,844 alphaction INFO: 
+PyTorch version: 1.4.0
+Is debug build: No
+CUDA used to build PyTorch: 10.1
+
+OS: Ubuntu 18.04.6 LTS
+GCC version: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+CMake version: version 3.10.2
+
+Python version: 3.6
+Is CUDA available: Yes
+CUDA runtime version: 10.1.243
+GPU models and configuration: 
+GPU 0: NVIDIA GeForce RTX 2080
+GPU 1: NVIDIA GeForce RTX 2080 Ti
+
+Nvidia driver version: 510.60.02
+cuDNN version: Could not collect
+
+Versions of relevant libraries:
+[pip3] numpy==1.19.5
+[pip3] torch==1.4.0
+[pip3] torchvision==0.5.0
+[conda] Could not collect
+2022-04-26 14:46:55,844 alphaction INFO: Loaded configuration file /root/baseline_zoo/AlphAction/config_files/massa.yaml
+2022-04-26 14:46:55,844 alphaction INFO: 
+MODEL:
+  WEIGHT: "data/models/pretrained_models/SlowFast-ResNet50-4x16.pth"
+  BACKBONE:
+    CONV_BODY: "Slowfast-Resnet50"
+    FROZEN_BN: True
+    SLOWFAST:
+      BETA: 0.125
+      LATERAL: "tconv"
+      SLOW:
+        ACTIVE: True
+        CONV3_NONLOCAL: False
+        CONV4_NONLOCAL: False
+      FAST:
+        ACTIVE: True
+        CONV3_NONLOCAL: False
+        CONV4_NONLOCAL: False
+  NONLOCAL:
+    USE_ZERO_INIT_CONV: False
+    BN_INIT_GAMMA: 0.0
+    FROZEN_BN: True
+  ROI_ACTION_HEAD:
+    FEATURE_EXTRACTOR: "2MLPFeatureExtractor"
+    POOLER_TYPE: "align3d"
+    MEAN_BEFORE_POOLER: True
+    POOLER_RESOLUTION: 7
+    POOLER_SCALE: 0.0625
+    POOLER_SAMPLING_RATIO: 0
+    NUM_CLASSES: 80
+    PROPOSAL_PER_CLIP: 10
+    DROPOUT_RATE: 0.2
+  IA_STRUCTURE:
+    ACTIVE: False
+INPUT:
+  FRAME_NUM: 64
+  FRAME_SAMPLE_RATE: 1
+  TAU: 16
+  ALPHA: 8
+  SLOW_JITTER: True
+  COLOR_JITTER: True
+DATASETS:
+  TRAIN: ("lfv_massa_train_ava_video",)
+  TEST: ("lfv_massa_val_ava_video",)
+DATALOADER:
+  NUM_WORKERS: 4
+  SIZE_DIVISIBILITY: 16
+SOLVER:
+  BASE_LR: 0.0004
+  WARMUP_FACTOR: 0.25
+  BIAS_LR_FACTOR: 2
+  WEIGHT_DECAY: 1e-7
+  STEPS: (50000, 70000)
+  WARMUP_ITERS: 2000
+  MAX_ITER: 90000
+  CHECKPOINT_PERIOD: 100
+  EVAL_PERIOD: 100
+  VIDEOS_PER_BATCH: 16
+TEST:
+  BOX_THRESH: 0.8
+  ACTION_THRESH: 0.
+  VIDEOS_PER_BATCH: 16
+OUTPUT_DIR: "data/output/resnet50_4x16f_baseline_massa"
+2022-04-26 14:46:55,845 alphaction INFO: Running with config:
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  NUM_WORKERS: 4
+  SIZE_DIVISIBILITY: 16
+DATASETS:
+  TEST: ('lfv_massa_val_ava_video',)
+  TRAIN: ('lfv_massa_train_ava_video',)
+INPUT:
+  ALPHA: 8
+  COLOR_JITTER: True
+  FRAME_NUM: 64
+  FRAME_SAMPLE_RATE: 1
+  HUE_JITTER: 20.0
+  MAX_SIZE_TEST: 464
+  MAX_SIZE_TRAIN: 464
+  MIN_SIZE_TEST: 256
+  MIN_SIZE_TRAIN: 256
+  PIXEL_MEAN: [122.7717, 115.9465, 102.9801]
+  PIXEL_STD: [57.375, 57.375, 57.375]
+  SAT_JITTER: 0.1
+  SLOW_JITTER: True
+  TAU: 16
+  TO_BGR: False
+  VAL_JITTER: 0.1
+MODEL:
+  BACKBONE:
+    BN_EPSILON: 1e-05
+    BN_INIT_GAMMA: 0.0
+    BN_MOMENTUM: 0.1
+    CONV_BODY: Slowfast-Resnet50
+    FROZEN_BN: True
+    I3D:
+      CONV3_GROUP_NL: False
+      CONV3_NONLOCAL: True
+      CONV4_NONLOCAL: True
+    SLOWFAST:
+      BETA: 0.125
+      FAST:
+        ACTIVE: True
+        CONV3_GROUP_NL: False
+        CONV3_NONLOCAL: False
+        CONV4_NONLOCAL: False
+      LATERAL: tconv
+      SLOW:
+        ACTIVE: True
+        CONV3_GROUP_NL: False
+        CONV3_NONLOCAL: False
+        CONV4_NONLOCAL: False
+  IA_STRUCTURE:
+    ACTIVE: False
+    CONV_INIT_STD: 0.01
+    DIM_IN: 2304
+    DIM_INNER: 512
+    DIM_OUT: 512
+    DROPOUT: 0.0
+    FUSION: concat
+    I_BLOCK_LIST: ['P', 'O', 'M', 'P', 'O', 'M']
+    LAYER_NORM: False
+    LENGTH: (30, 30)
+    MAX_OBJECT: 0
+    MAX_PERSON: 25
+    MAX_PER_SEC: 5
+    MEMORY_RATE: 1
+    NO_BIAS: False
+    PENALTY: True
+    ROI_DIM_REDUCE: True
+    STRUCTURE: serial
+    TEMPORAL_POSITION: True
+    USE_ZERO_INIT_CONV: True
+  NONLOCAL:
+    BN_EPSILON: 1e-05
+    BN_INIT_GAMMA: 0.0
+    BN_MOMENTUM: 0.1
+    CONV_INIT_STD: 0.01
+    FROZEN_BN: True
+    NO_BIAS: False
+    USE_BN: True
+    USE_MAXPOOL: True
+    USE_SCALE: True
+    USE_SOFTMAX: True
+    USE_ZERO_INIT_CONV: False
+  ROI_ACTION_HEAD:
+    DROPOUT_RATE: 0.2
+    FEATURE_EXTRACTOR: 2MLPFeatureExtractor
+    FOCAL_LOSS:
+      ALPHA: -1.0
+      GAMMA: 2.0
+    MEAN_BEFORE_POOLER: True
+    MLP_HEAD_DIM: 1024
+    NUM_CLASSES: 80
+    NUM_OBJECT_MANIPULATION_CLASSES: 49
+    NUM_PERSON_INTERACTION_CLASSES: 17
+    NUM_PERSON_MOVEMENT_CLASSES: 14
+    OBJECT_LOSS_WEIGHT: 49.0
+    PERSON_LOSS_WEIGHT: 17.0
+    POOLER_RESOLUTION: 7
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALE: 0.0625
+    POOLER_TYPE: align3d
+    POSE_LOSS_WEIGHT: 1.2
+    PREDICTOR: FCPredictor
+    PROPOSAL_PER_CLIP: 10
+  WEIGHT: data/models/pretrained_models/SlowFast-ResNet50-4x16.pth
+OUTPUT_DIR: data/output/resnet50_4x16f_baseline_massa
+SOLVER:
+  BASE_LR: 0.000125
+  BIAS_LR_FACTOR: 2
+  CHECKPOINT_PERIOD: 100
+  EVAL_PERIOD: 100
+  GAMMA: 0.1
+  IA_LR_FACTOR: 1.0
+  MAX_ITER: 880000
+  MOMENTUM: 0.9
+  SCHEDULER: warmup_multi_step
+  STEPS: (560000, 720000)
+  VIDEOS_PER_BATCH: 2
+  WARMUP_FACTOR: 0.25
+  WARMUP_ITERS: 2000
+  WARMUP_METHOD: linear
+  WARMUP_ON: True
+  WEIGHT_DECAY: 1e-07
+  WEIGHT_DECAY_BIAS: 0.0
+  WEIGHT_DECAY_BN: 0.0
+TEST:
+  ACTION_THRESH: 0.0
+  BOX_THRESH: 0.8
+  EXTEND_SCALE: (0.1, 0.05)
+  VIDEOS_PER_BATCH: 2
+2022-04-26 14:46:58,013 alphaction.utils.checkpoint INFO: Loading checkpoint from data/models/pretrained_models/SlowFast-ResNet50-4x16.pth
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv1.conv.bias                         loaded from backbone.fast.Tconv1.conv.bias                                of shape (16,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv1.conv.weight                       loaded from backbone.fast.Tconv1.conv.weight                              of shape (16, 8, 5, 1, 1)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv2.conv.bias                         loaded from backbone.fast.Tconv2.conv.bias                                of shape (64,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv2.conv.weight                       loaded from backbone.fast.Tconv2.conv.weight                              of shape (64, 32, 5, 1, 1)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv3.conv.bias                         loaded from backbone.fast.Tconv3.conv.bias                                of shape (128,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv3.conv.weight                       loaded from backbone.fast.Tconv3.conv.weight                              of shape (128, 64, 5, 1, 1)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv4.conv.bias                         loaded from backbone.fast.Tconv4.conv.bias                                of shape (256,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.Tconv4.conv.weight                       loaded from backbone.fast.Tconv4.conv.weight                              of shape (256, 128, 5, 1, 1)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.bn1.bias                                 loaded from backbone.fast.bn1.bias                                        of shape (8,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.bn1.running_mean                         loaded from backbone.fast.bn1.running_mean                                of shape (8,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.bn1.running_var                          loaded from backbone.fast.bn1.running_var                                 of shape (8,)
+2022-04-26 14:46:58,098 alphaction.utils.model_serialization INFO: backbone.fast.bn1.weight                               loaded from backbone.fast.bn1.weight                                      of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.conv1.weight                             loaded from backbone.fast.conv1.weight                                    of shape (8, 3, 5, 7, 7)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl1.res_0.btnk.conv1.bn.bias                of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl1.res_0.btnk.conv1.bn.running_mean        of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl1.res_0.btnk.conv1.bn.running_var         of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl1.res_0.btnk.conv1.bn.weight              of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl1.res_0.btnk.conv1.conv.weight            of shape (8, 8, 3, 1, 1)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl1.res_0.btnk.conv2.bn.bias                of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl1.res_0.btnk.conv2.bn.running_mean        of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl1.res_0.btnk.conv2.bn.running_var         of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl1.res_0.btnk.conv2.bn.weight              of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl1.res_0.btnk.conv2.conv.weight            of shape (8, 8, 1, 3, 3)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl1.res_0.btnk.conv3.bn.bias                of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl1.res_0.btnk.conv3.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl1.res_0.btnk.conv3.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl1.res_0.btnk.conv3.bn.weight              of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl1.res_0.btnk.conv3.conv.weight            of shape (32, 8, 1, 1, 1)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.shortcut.bn.bias           loaded from backbone.fast.res_nl1.res_0.shortcut.bn.bias                  of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.shortcut.bn.running_mean   loaded from backbone.fast.res_nl1.res_0.shortcut.bn.running_mean          of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.shortcut.bn.running_var    loaded from backbone.fast.res_nl1.res_0.shortcut.bn.running_var           of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.shortcut.bn.weight         loaded from backbone.fast.res_nl1.res_0.shortcut.bn.weight                of shape (32,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_0.shortcut.conv.weight       loaded from backbone.fast.res_nl1.res_0.shortcut.conv.weight              of shape (32, 8, 1, 1, 1)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl1.res_1.btnk.conv1.bn.bias                of shape (8,)
+2022-04-26 14:46:58,099 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl1.res_1.btnk.conv1.bn.running_mean        of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl1.res_1.btnk.conv1.bn.running_var         of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl1.res_1.btnk.conv1.bn.weight              of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl1.res_1.btnk.conv1.conv.weight            of shape (8, 32, 3, 1, 1)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl1.res_1.btnk.conv2.bn.bias                of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl1.res_1.btnk.conv2.bn.running_mean        of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl1.res_1.btnk.conv2.bn.running_var         of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl1.res_1.btnk.conv2.bn.weight              of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl1.res_1.btnk.conv2.conv.weight            of shape (8, 8, 1, 3, 3)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl1.res_1.btnk.conv3.bn.bias                of shape (32,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl1.res_1.btnk.conv3.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl1.res_1.btnk.conv3.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl1.res_1.btnk.conv3.bn.weight              of shape (32,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_1.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl1.res_1.btnk.conv3.conv.weight            of shape (32, 8, 1, 1, 1)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl1.res_2.btnk.conv1.bn.bias                of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl1.res_2.btnk.conv1.bn.running_mean        of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl1.res_2.btnk.conv1.bn.running_var         of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl1.res_2.btnk.conv1.bn.weight              of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl1.res_2.btnk.conv1.conv.weight            of shape (8, 32, 3, 1, 1)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl1.res_2.btnk.conv2.bn.bias                of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl1.res_2.btnk.conv2.bn.running_mean        of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl1.res_2.btnk.conv2.bn.running_var         of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl1.res_2.btnk.conv2.bn.weight              of shape (8,)
+2022-04-26 14:46:58,100 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl1.res_2.btnk.conv2.conv.weight            of shape (8, 8, 1, 3, 3)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl1.res_2.btnk.conv3.bn.bias                of shape (32,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl1.res_2.btnk.conv3.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl1.res_2.btnk.conv3.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl1.res_2.btnk.conv3.bn.weight              of shape (32,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl1.res_2.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl1.res_2.btnk.conv3.conv.weight            of shape (32, 8, 1, 1, 1)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl2.res_0.btnk.conv1.bn.bias                of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl2.res_0.btnk.conv1.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl2.res_0.btnk.conv1.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl2.res_0.btnk.conv1.bn.weight              of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl2.res_0.btnk.conv1.conv.weight            of shape (16, 32, 3, 1, 1)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl2.res_0.btnk.conv2.bn.bias                of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl2.res_0.btnk.conv2.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl2.res_0.btnk.conv2.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl2.res_0.btnk.conv2.bn.weight              of shape (16,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl2.res_0.btnk.conv2.conv.weight            of shape (16, 16, 1, 3, 3)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl2.res_0.btnk.conv3.bn.bias                of shape (64,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl2.res_0.btnk.conv3.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl2.res_0.btnk.conv3.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl2.res_0.btnk.conv3.bn.weight              of shape (64,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl2.res_0.btnk.conv3.conv.weight            of shape (64, 16, 1, 1, 1)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.shortcut.bn.bias           loaded from backbone.fast.res_nl2.res_0.shortcut.bn.bias                  of shape (64,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.shortcut.bn.running_mean   loaded from backbone.fast.res_nl2.res_0.shortcut.bn.running_mean          of shape (64,)
+2022-04-26 14:46:58,101 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.shortcut.bn.running_var    loaded from backbone.fast.res_nl2.res_0.shortcut.bn.running_var           of shape (64,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.shortcut.bn.weight         loaded from backbone.fast.res_nl2.res_0.shortcut.bn.weight                of shape (64,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_0.shortcut.conv.weight       loaded from backbone.fast.res_nl2.res_0.shortcut.conv.weight              of shape (64, 32, 1, 1, 1)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl2.res_1.btnk.conv1.bn.bias                of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl2.res_1.btnk.conv1.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl2.res_1.btnk.conv1.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl2.res_1.btnk.conv1.bn.weight              of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl2.res_1.btnk.conv1.conv.weight            of shape (16, 64, 3, 1, 1)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl2.res_1.btnk.conv2.bn.bias                of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl2.res_1.btnk.conv2.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl2.res_1.btnk.conv2.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl2.res_1.btnk.conv2.bn.weight              of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl2.res_1.btnk.conv2.conv.weight            of shape (16, 16, 1, 3, 3)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl2.res_1.btnk.conv3.bn.bias                of shape (64,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl2.res_1.btnk.conv3.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl2.res_1.btnk.conv3.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl2.res_1.btnk.conv3.bn.weight              of shape (64,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_1.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl2.res_1.btnk.conv3.conv.weight            of shape (64, 16, 1, 1, 1)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl2.res_2.btnk.conv1.bn.bias                of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl2.res_2.btnk.conv1.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl2.res_2.btnk.conv1.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl2.res_2.btnk.conv1.bn.weight              of shape (16,)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl2.res_2.btnk.conv1.conv.weight            of shape (16, 64, 3, 1, 1)
+2022-04-26 14:46:58,102 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl2.res_2.btnk.conv2.bn.bias                of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl2.res_2.btnk.conv2.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl2.res_2.btnk.conv2.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl2.res_2.btnk.conv2.bn.weight              of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl2.res_2.btnk.conv2.conv.weight            of shape (16, 16, 1, 3, 3)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl2.res_2.btnk.conv3.bn.bias                of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl2.res_2.btnk.conv3.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl2.res_2.btnk.conv3.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl2.res_2.btnk.conv3.bn.weight              of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_2.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl2.res_2.btnk.conv3.conv.weight            of shape (64, 16, 1, 1, 1)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl2.res_3.btnk.conv1.bn.bias                of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl2.res_3.btnk.conv1.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl2.res_3.btnk.conv1.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl2.res_3.btnk.conv1.bn.weight              of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl2.res_3.btnk.conv1.conv.weight            of shape (16, 64, 3, 1, 1)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl2.res_3.btnk.conv2.bn.bias                of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl2.res_3.btnk.conv2.bn.running_mean        of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl2.res_3.btnk.conv2.bn.running_var         of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl2.res_3.btnk.conv2.bn.weight              of shape (16,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl2.res_3.btnk.conv2.conv.weight            of shape (16, 16, 1, 3, 3)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl2.res_3.btnk.conv3.bn.bias                of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl2.res_3.btnk.conv3.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl2.res_3.btnk.conv3.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl2.res_3.btnk.conv3.bn.weight              of shape (64,)
+2022-04-26 14:46:58,103 alphaction.utils.model_serialization INFO: backbone.fast.res_nl2.res_3.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl2.res_3.btnk.conv3.conv.weight            of shape (64, 16, 1, 1, 1)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl3.res_0.btnk.conv1.bn.bias                of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl3.res_0.btnk.conv1.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl3.res_0.btnk.conv1.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl3.res_0.btnk.conv1.bn.weight              of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl3.res_0.btnk.conv1.conv.weight            of shape (32, 64, 3, 1, 1)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl3.res_0.btnk.conv2.bn.bias                of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl3.res_0.btnk.conv2.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl3.res_0.btnk.conv2.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl3.res_0.btnk.conv2.bn.weight              of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl3.res_0.btnk.conv2.conv.weight            of shape (32, 32, 1, 3, 3)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl3.res_0.btnk.conv3.bn.bias                of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl3.res_0.btnk.conv3.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl3.res_0.btnk.conv3.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl3.res_0.btnk.conv3.bn.weight              of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl3.res_0.btnk.conv3.conv.weight            of shape (128, 32, 1, 1, 1)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.shortcut.bn.bias           loaded from backbone.fast.res_nl3.res_0.shortcut.bn.bias                  of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.shortcut.bn.running_mean   loaded from backbone.fast.res_nl3.res_0.shortcut.bn.running_mean          of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.shortcut.bn.running_var    loaded from backbone.fast.res_nl3.res_0.shortcut.bn.running_var           of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.shortcut.bn.weight         loaded from backbone.fast.res_nl3.res_0.shortcut.bn.weight                of shape (128,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_0.shortcut.conv.weight       loaded from backbone.fast.res_nl3.res_0.shortcut.conv.weight              of shape (128, 64, 1, 1, 1)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl3.res_1.btnk.conv1.bn.bias                of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl3.res_1.btnk.conv1.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,104 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl3.res_1.btnk.conv1.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl3.res_1.btnk.conv1.bn.weight              of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl3.res_1.btnk.conv1.conv.weight            of shape (32, 128, 3, 1, 1)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl3.res_1.btnk.conv2.bn.bias                of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl3.res_1.btnk.conv2.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl3.res_1.btnk.conv2.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl3.res_1.btnk.conv2.bn.weight              of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl3.res_1.btnk.conv2.conv.weight            of shape (32, 32, 1, 3, 3)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl3.res_1.btnk.conv3.bn.bias                of shape (128,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl3.res_1.btnk.conv3.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl3.res_1.btnk.conv3.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl3.res_1.btnk.conv3.bn.weight              of shape (128,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_1.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl3.res_1.btnk.conv3.conv.weight            of shape (128, 32, 1, 1, 1)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl3.res_2.btnk.conv1.bn.bias                of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl3.res_2.btnk.conv1.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl3.res_2.btnk.conv1.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl3.res_2.btnk.conv1.bn.weight              of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl3.res_2.btnk.conv1.conv.weight            of shape (32, 128, 3, 1, 1)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl3.res_2.btnk.conv2.bn.bias                of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl3.res_2.btnk.conv2.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl3.res_2.btnk.conv2.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl3.res_2.btnk.conv2.bn.weight              of shape (32,)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl3.res_2.btnk.conv2.conv.weight            of shape (32, 32, 1, 3, 3)
+2022-04-26 14:46:58,105 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl3.res_2.btnk.conv3.bn.bias                of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl3.res_2.btnk.conv3.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl3.res_2.btnk.conv3.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl3.res_2.btnk.conv3.bn.weight              of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_2.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl3.res_2.btnk.conv3.conv.weight            of shape (128, 32, 1, 1, 1)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl3.res_3.btnk.conv1.bn.bias                of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl3.res_3.btnk.conv1.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl3.res_3.btnk.conv1.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl3.res_3.btnk.conv1.bn.weight              of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl3.res_3.btnk.conv1.conv.weight            of shape (32, 128, 3, 1, 1)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl3.res_3.btnk.conv2.bn.bias                of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl3.res_3.btnk.conv2.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl3.res_3.btnk.conv2.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl3.res_3.btnk.conv2.bn.weight              of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl3.res_3.btnk.conv2.conv.weight            of shape (32, 32, 1, 3, 3)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl3.res_3.btnk.conv3.bn.bias                of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl3.res_3.btnk.conv3.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl3.res_3.btnk.conv3.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl3.res_3.btnk.conv3.bn.weight              of shape (128,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_3.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl3.res_3.btnk.conv3.conv.weight            of shape (128, 32, 1, 1, 1)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl3.res_4.btnk.conv1.bn.bias                of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl3.res_4.btnk.conv1.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl3.res_4.btnk.conv1.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,106 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl3.res_4.btnk.conv1.bn.weight              of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl3.res_4.btnk.conv1.conv.weight            of shape (32, 128, 3, 1, 1)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl3.res_4.btnk.conv2.bn.bias                of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl3.res_4.btnk.conv2.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl3.res_4.btnk.conv2.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl3.res_4.btnk.conv2.bn.weight              of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl3.res_4.btnk.conv2.conv.weight            of shape (32, 32, 1, 3, 3)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl3.res_4.btnk.conv3.bn.bias                of shape (128,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl3.res_4.btnk.conv3.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl3.res_4.btnk.conv3.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl3.res_4.btnk.conv3.bn.weight              of shape (128,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_4.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl3.res_4.btnk.conv3.conv.weight            of shape (128, 32, 1, 1, 1)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl3.res_5.btnk.conv1.bn.bias                of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl3.res_5.btnk.conv1.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl3.res_5.btnk.conv1.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl3.res_5.btnk.conv1.bn.weight              of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl3.res_5.btnk.conv1.conv.weight            of shape (32, 128, 3, 1, 1)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl3.res_5.btnk.conv2.bn.bias                of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl3.res_5.btnk.conv2.bn.running_mean        of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl3.res_5.btnk.conv2.bn.running_var         of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl3.res_5.btnk.conv2.bn.weight              of shape (32,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl3.res_5.btnk.conv2.conv.weight            of shape (32, 32, 1, 3, 3)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl3.res_5.btnk.conv3.bn.bias                of shape (128,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl3.res_5.btnk.conv3.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,107 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl3.res_5.btnk.conv3.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl3.res_5.btnk.conv3.bn.weight              of shape (128,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl3.res_5.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl3.res_5.btnk.conv3.conv.weight            of shape (128, 32, 1, 1, 1)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl4.res_0.btnk.conv1.bn.bias                of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl4.res_0.btnk.conv1.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl4.res_0.btnk.conv1.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl4.res_0.btnk.conv1.bn.weight              of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl4.res_0.btnk.conv1.conv.weight            of shape (64, 128, 3, 1, 1)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl4.res_0.btnk.conv2.bn.bias                of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl4.res_0.btnk.conv2.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl4.res_0.btnk.conv2.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl4.res_0.btnk.conv2.bn.weight              of shape (64,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl4.res_0.btnk.conv2.conv.weight            of shape (64, 64, 1, 3, 3)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl4.res_0.btnk.conv3.bn.bias                of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl4.res_0.btnk.conv3.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl4.res_0.btnk.conv3.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl4.res_0.btnk.conv3.bn.weight              of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl4.res_0.btnk.conv3.conv.weight            of shape (256, 64, 1, 1, 1)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.shortcut.bn.bias           loaded from backbone.fast.res_nl4.res_0.shortcut.bn.bias                  of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.shortcut.bn.running_mean   loaded from backbone.fast.res_nl4.res_0.shortcut.bn.running_mean          of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.shortcut.bn.running_var    loaded from backbone.fast.res_nl4.res_0.shortcut.bn.running_var           of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.shortcut.bn.weight         loaded from backbone.fast.res_nl4.res_0.shortcut.bn.weight                of shape (256,)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_0.shortcut.conv.weight       loaded from backbone.fast.res_nl4.res_0.shortcut.conv.weight              of shape (256, 128, 1, 1, 1)
+2022-04-26 14:46:58,108 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl4.res_1.btnk.conv1.bn.bias                of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl4.res_1.btnk.conv1.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl4.res_1.btnk.conv1.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl4.res_1.btnk.conv1.bn.weight              of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl4.res_1.btnk.conv1.conv.weight            of shape (64, 256, 3, 1, 1)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl4.res_1.btnk.conv2.bn.bias                of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl4.res_1.btnk.conv2.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl4.res_1.btnk.conv2.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl4.res_1.btnk.conv2.bn.weight              of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl4.res_1.btnk.conv2.conv.weight            of shape (64, 64, 1, 3, 3)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl4.res_1.btnk.conv3.bn.bias                of shape (256,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl4.res_1.btnk.conv3.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl4.res_1.btnk.conv3.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl4.res_1.btnk.conv3.bn.weight              of shape (256,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_1.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl4.res_1.btnk.conv3.conv.weight            of shape (256, 64, 1, 1, 1)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv1.bn.bias         loaded from backbone.fast.res_nl4.res_2.btnk.conv1.bn.bias                of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv1.bn.running_mean loaded from backbone.fast.res_nl4.res_2.btnk.conv1.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv1.bn.running_var  loaded from backbone.fast.res_nl4.res_2.btnk.conv1.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv1.bn.weight       loaded from backbone.fast.res_nl4.res_2.btnk.conv1.bn.weight              of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv1.conv.weight     loaded from backbone.fast.res_nl4.res_2.btnk.conv1.conv.weight            of shape (64, 256, 3, 1, 1)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv2.bn.bias         loaded from backbone.fast.res_nl4.res_2.btnk.conv2.bn.bias                of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv2.bn.running_mean loaded from backbone.fast.res_nl4.res_2.btnk.conv2.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv2.bn.running_var  loaded from backbone.fast.res_nl4.res_2.btnk.conv2.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv2.bn.weight       loaded from backbone.fast.res_nl4.res_2.btnk.conv2.bn.weight              of shape (64,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv2.conv.weight     loaded from backbone.fast.res_nl4.res_2.btnk.conv2.conv.weight            of shape (64, 64, 1, 3, 3)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv3.bn.bias         loaded from backbone.fast.res_nl4.res_2.btnk.conv3.bn.bias                of shape (256,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv3.bn.running_mean loaded from backbone.fast.res_nl4.res_2.btnk.conv3.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,109 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv3.bn.running_var  loaded from backbone.fast.res_nl4.res_2.btnk.conv3.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv3.bn.weight       loaded from backbone.fast.res_nl4.res_2.btnk.conv3.bn.weight              of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.fast.res_nl4.res_2.btnk.conv3.conv.weight     loaded from backbone.fast.res_nl4.res_2.btnk.conv3.conv.weight            of shape (256, 64, 1, 1, 1)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.bn1.bias                                 loaded from backbone.slow.bn1.bias                                        of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.bn1.running_mean                         loaded from backbone.slow.bn1.running_mean                                of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.bn1.running_var                          loaded from backbone.slow.bn1.running_var                                 of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.bn1.weight                               loaded from backbone.slow.bn1.weight                                      of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.conv1.weight                             loaded from backbone.slow.conv1.weight                                    of shape (64, 3, 1, 7, 7)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl1.res_0.btnk.conv1.bn.bias                of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl1.res_0.btnk.conv1.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl1.res_0.btnk.conv1.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl1.res_0.btnk.conv1.bn.weight              of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl1.res_0.btnk.conv1.conv.weight            of shape (64, 80, 1, 1, 1)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl1.res_0.btnk.conv2.bn.bias                of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl1.res_0.btnk.conv2.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl1.res_0.btnk.conv2.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl1.res_0.btnk.conv2.bn.weight              of shape (64,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl1.res_0.btnk.conv2.conv.weight            of shape (64, 64, 1, 3, 3)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl1.res_0.btnk.conv3.bn.bias                of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl1.res_0.btnk.conv3.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl1.res_0.btnk.conv3.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl1.res_0.btnk.conv3.bn.weight              of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl1.res_0.btnk.conv3.conv.weight            of shape (256, 64, 1, 1, 1)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.shortcut.bn.bias           loaded from backbone.slow.res_nl1.res_0.shortcut.bn.bias                  of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.shortcut.bn.running_mean   loaded from backbone.slow.res_nl1.res_0.shortcut.bn.running_mean          of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.shortcut.bn.running_var    loaded from backbone.slow.res_nl1.res_0.shortcut.bn.running_var           of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.shortcut.bn.weight         loaded from backbone.slow.res_nl1.res_0.shortcut.bn.weight                of shape (256,)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_0.shortcut.conv.weight       loaded from backbone.slow.res_nl1.res_0.shortcut.conv.weight              of shape (256, 80, 1, 1, 1)
+2022-04-26 14:46:58,110 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl1.res_1.btnk.conv1.bn.bias                of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl1.res_1.btnk.conv1.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl1.res_1.btnk.conv1.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl1.res_1.btnk.conv1.bn.weight              of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl1.res_1.btnk.conv1.conv.weight            of shape (64, 256, 1, 1, 1)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl1.res_1.btnk.conv2.bn.bias                of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl1.res_1.btnk.conv2.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl1.res_1.btnk.conv2.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl1.res_1.btnk.conv2.bn.weight              of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl1.res_1.btnk.conv2.conv.weight            of shape (64, 64, 1, 3, 3)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl1.res_1.btnk.conv3.bn.bias                of shape (256,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl1.res_1.btnk.conv3.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl1.res_1.btnk.conv3.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl1.res_1.btnk.conv3.bn.weight              of shape (256,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_1.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl1.res_1.btnk.conv3.conv.weight            of shape (256, 64, 1, 1, 1)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl1.res_2.btnk.conv1.bn.bias                of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl1.res_2.btnk.conv1.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl1.res_2.btnk.conv1.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl1.res_2.btnk.conv1.bn.weight              of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl1.res_2.btnk.conv1.conv.weight            of shape (64, 256, 1, 1, 1)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl1.res_2.btnk.conv2.bn.bias                of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl1.res_2.btnk.conv2.bn.running_mean        of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl1.res_2.btnk.conv2.bn.running_var         of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl1.res_2.btnk.conv2.bn.weight              of shape (64,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl1.res_2.btnk.conv2.conv.weight            of shape (64, 64, 1, 3, 3)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl1.res_2.btnk.conv3.bn.bias                of shape (256,)
+2022-04-26 14:46:58,111 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl1.res_2.btnk.conv3.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl1.res_2.btnk.conv3.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl1.res_2.btnk.conv3.bn.weight              of shape (256,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl1.res_2.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl1.res_2.btnk.conv3.conv.weight            of shape (256, 64, 1, 1, 1)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl2.res_0.btnk.conv1.bn.bias                of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl2.res_0.btnk.conv1.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl2.res_0.btnk.conv1.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl2.res_0.btnk.conv1.bn.weight              of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl2.res_0.btnk.conv1.conv.weight            of shape (128, 320, 1, 1, 1)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl2.res_0.btnk.conv2.bn.bias                of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl2.res_0.btnk.conv2.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl2.res_0.btnk.conv2.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl2.res_0.btnk.conv2.bn.weight              of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl2.res_0.btnk.conv2.conv.weight            of shape (128, 128, 1, 3, 3)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl2.res_0.btnk.conv3.bn.bias                of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl2.res_0.btnk.conv3.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl2.res_0.btnk.conv3.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl2.res_0.btnk.conv3.bn.weight              of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl2.res_0.btnk.conv3.conv.weight            of shape (512, 128, 1, 1, 1)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.shortcut.bn.bias           loaded from backbone.slow.res_nl2.res_0.shortcut.bn.bias                  of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.shortcut.bn.running_mean   loaded from backbone.slow.res_nl2.res_0.shortcut.bn.running_mean          of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.shortcut.bn.running_var    loaded from backbone.slow.res_nl2.res_0.shortcut.bn.running_var           of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.shortcut.bn.weight         loaded from backbone.slow.res_nl2.res_0.shortcut.bn.weight                of shape (512,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_0.shortcut.conv.weight       loaded from backbone.slow.res_nl2.res_0.shortcut.conv.weight              of shape (512, 320, 1, 1, 1)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl2.res_1.btnk.conv1.bn.bias                of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl2.res_1.btnk.conv1.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl2.res_1.btnk.conv1.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl2.res_1.btnk.conv1.bn.weight              of shape (128,)
+2022-04-26 14:46:58,112 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl2.res_1.btnk.conv1.conv.weight            of shape (128, 512, 1, 1, 1)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl2.res_1.btnk.conv2.bn.bias                of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl2.res_1.btnk.conv2.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl2.res_1.btnk.conv2.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl2.res_1.btnk.conv2.bn.weight              of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl2.res_1.btnk.conv2.conv.weight            of shape (128, 128, 1, 3, 3)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl2.res_1.btnk.conv3.bn.bias                of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl2.res_1.btnk.conv3.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl2.res_1.btnk.conv3.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl2.res_1.btnk.conv3.bn.weight              of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_1.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl2.res_1.btnk.conv3.conv.weight            of shape (512, 128, 1, 1, 1)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl2.res_2.btnk.conv1.bn.bias                of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl2.res_2.btnk.conv1.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl2.res_2.btnk.conv1.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl2.res_2.btnk.conv1.bn.weight              of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl2.res_2.btnk.conv1.conv.weight            of shape (128, 512, 1, 1, 1)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl2.res_2.btnk.conv2.bn.bias                of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl2.res_2.btnk.conv2.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl2.res_2.btnk.conv2.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl2.res_2.btnk.conv2.bn.weight              of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl2.res_2.btnk.conv2.conv.weight            of shape (128, 128, 1, 3, 3)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl2.res_2.btnk.conv3.bn.bias                of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl2.res_2.btnk.conv3.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl2.res_2.btnk.conv3.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl2.res_2.btnk.conv3.bn.weight              of shape (512,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_2.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl2.res_2.btnk.conv3.conv.weight            of shape (512, 128, 1, 1, 1)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl2.res_3.btnk.conv1.bn.bias                of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl2.res_3.btnk.conv1.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,113 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl2.res_3.btnk.conv1.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl2.res_3.btnk.conv1.bn.weight              of shape (128,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl2.res_3.btnk.conv1.conv.weight            of shape (128, 512, 1, 1, 1)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl2.res_3.btnk.conv2.bn.bias                of shape (128,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl2.res_3.btnk.conv2.bn.running_mean        of shape (128,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl2.res_3.btnk.conv2.bn.running_var         of shape (128,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl2.res_3.btnk.conv2.bn.weight              of shape (128,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl2.res_3.btnk.conv2.conv.weight            of shape (128, 128, 1, 3, 3)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl2.res_3.btnk.conv3.bn.bias                of shape (512,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl2.res_3.btnk.conv3.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl2.res_3.btnk.conv3.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl2.res_3.btnk.conv3.bn.weight              of shape (512,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl2.res_3.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl2.res_3.btnk.conv3.conv.weight            of shape (512, 128, 1, 1, 1)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl3.res_0.btnk.conv1.bn.bias                of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl3.res_0.btnk.conv1.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl3.res_0.btnk.conv1.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl3.res_0.btnk.conv1.bn.weight              of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl3.res_0.btnk.conv1.conv.weight            of shape (256, 640, 3, 1, 1)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl3.res_0.btnk.conv2.bn.bias                of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl3.res_0.btnk.conv2.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl3.res_0.btnk.conv2.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl3.res_0.btnk.conv2.bn.weight              of shape (256,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl3.res_0.btnk.conv2.conv.weight            of shape (256, 256, 1, 3, 3)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl3.res_0.btnk.conv3.bn.bias                of shape (1024,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl3.res_0.btnk.conv3.bn.running_mean        of shape (1024,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl3.res_0.btnk.conv3.bn.running_var         of shape (1024,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl3.res_0.btnk.conv3.bn.weight              of shape (1024,)
+2022-04-26 14:46:58,114 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl3.res_0.btnk.conv3.conv.weight            of shape (1024, 256, 1, 1, 1)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.shortcut.bn.bias           loaded from backbone.slow.res_nl3.res_0.shortcut.bn.bias                  of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.shortcut.bn.running_mean   loaded from backbone.slow.res_nl3.res_0.shortcut.bn.running_mean          of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.shortcut.bn.running_var    loaded from backbone.slow.res_nl3.res_0.shortcut.bn.running_var           of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.shortcut.bn.weight         loaded from backbone.slow.res_nl3.res_0.shortcut.bn.weight                of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_0.shortcut.conv.weight       loaded from backbone.slow.res_nl3.res_0.shortcut.conv.weight              of shape (1024, 640, 1, 1, 1)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl3.res_1.btnk.conv1.bn.bias                of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl3.res_1.btnk.conv1.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl3.res_1.btnk.conv1.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl3.res_1.btnk.conv1.bn.weight              of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl3.res_1.btnk.conv1.conv.weight            of shape (256, 1024, 3, 1, 1)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl3.res_1.btnk.conv2.bn.bias                of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl3.res_1.btnk.conv2.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl3.res_1.btnk.conv2.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl3.res_1.btnk.conv2.bn.weight              of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl3.res_1.btnk.conv2.conv.weight            of shape (256, 256, 1, 3, 3)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl3.res_1.btnk.conv3.bn.bias                of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl3.res_1.btnk.conv3.bn.running_mean        of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl3.res_1.btnk.conv3.bn.running_var         of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl3.res_1.btnk.conv3.bn.weight              of shape (1024,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_1.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl3.res_1.btnk.conv3.conv.weight            of shape (1024, 256, 1, 1, 1)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl3.res_2.btnk.conv1.bn.bias                of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl3.res_2.btnk.conv1.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl3.res_2.btnk.conv1.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl3.res_2.btnk.conv1.bn.weight              of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl3.res_2.btnk.conv1.conv.weight            of shape (256, 1024, 3, 1, 1)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl3.res_2.btnk.conv2.bn.bias                of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl3.res_2.btnk.conv2.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,115 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl3.res_2.btnk.conv2.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl3.res_2.btnk.conv2.bn.weight              of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl3.res_2.btnk.conv2.conv.weight            of shape (256, 256, 1, 3, 3)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl3.res_2.btnk.conv3.bn.bias                of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl3.res_2.btnk.conv3.bn.running_mean        of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl3.res_2.btnk.conv3.bn.running_var         of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl3.res_2.btnk.conv3.bn.weight              of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_2.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl3.res_2.btnk.conv3.conv.weight            of shape (1024, 256, 1, 1, 1)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl3.res_3.btnk.conv1.bn.bias                of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl3.res_3.btnk.conv1.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl3.res_3.btnk.conv1.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl3.res_3.btnk.conv1.bn.weight              of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl3.res_3.btnk.conv1.conv.weight            of shape (256, 1024, 3, 1, 1)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl3.res_3.btnk.conv2.bn.bias                of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl3.res_3.btnk.conv2.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl3.res_3.btnk.conv2.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl3.res_3.btnk.conv2.bn.weight              of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl3.res_3.btnk.conv2.conv.weight            of shape (256, 256, 1, 3, 3)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl3.res_3.btnk.conv3.bn.bias                of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl3.res_3.btnk.conv3.bn.running_mean        of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl3.res_3.btnk.conv3.bn.running_var         of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl3.res_3.btnk.conv3.bn.weight              of shape (1024,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_3.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl3.res_3.btnk.conv3.conv.weight            of shape (1024, 256, 1, 1, 1)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl3.res_4.btnk.conv1.bn.bias                of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl3.res_4.btnk.conv1.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl3.res_4.btnk.conv1.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl3.res_4.btnk.conv1.bn.weight              of shape (256,)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl3.res_4.btnk.conv1.conv.weight            of shape (256, 1024, 3, 1, 1)
+2022-04-26 14:46:58,116 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl3.res_4.btnk.conv2.bn.bias                of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl3.res_4.btnk.conv2.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl3.res_4.btnk.conv2.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl3.res_4.btnk.conv2.bn.weight              of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl3.res_4.btnk.conv2.conv.weight            of shape (256, 256, 1, 3, 3)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl3.res_4.btnk.conv3.bn.bias                of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl3.res_4.btnk.conv3.bn.running_mean        of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl3.res_4.btnk.conv3.bn.running_var         of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl3.res_4.btnk.conv3.bn.weight              of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_4.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl3.res_4.btnk.conv3.conv.weight            of shape (1024, 256, 1, 1, 1)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl3.res_5.btnk.conv1.bn.bias                of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl3.res_5.btnk.conv1.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl3.res_5.btnk.conv1.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl3.res_5.btnk.conv1.bn.weight              of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl3.res_5.btnk.conv1.conv.weight            of shape (256, 1024, 3, 1, 1)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl3.res_5.btnk.conv2.bn.bias                of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl3.res_5.btnk.conv2.bn.running_mean        of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl3.res_5.btnk.conv2.bn.running_var         of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl3.res_5.btnk.conv2.bn.weight              of shape (256,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl3.res_5.btnk.conv2.conv.weight            of shape (256, 256, 1, 3, 3)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl3.res_5.btnk.conv3.bn.bias                of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl3.res_5.btnk.conv3.bn.running_mean        of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl3.res_5.btnk.conv3.bn.running_var         of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl3.res_5.btnk.conv3.bn.weight              of shape (1024,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl3.res_5.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl3.res_5.btnk.conv3.conv.weight            of shape (1024, 256, 1, 1, 1)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl4.res_0.btnk.conv1.bn.bias                of shape (512,)
+2022-04-26 14:46:58,117 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl4.res_0.btnk.conv1.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl4.res_0.btnk.conv1.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl4.res_0.btnk.conv1.bn.weight              of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl4.res_0.btnk.conv1.conv.weight            of shape (512, 1280, 3, 1, 1)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl4.res_0.btnk.conv2.bn.bias                of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl4.res_0.btnk.conv2.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl4.res_0.btnk.conv2.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl4.res_0.btnk.conv2.bn.weight              of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl4.res_0.btnk.conv2.conv.weight            of shape (512, 512, 1, 3, 3)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl4.res_0.btnk.conv3.bn.bias                of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl4.res_0.btnk.conv3.bn.running_mean        of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl4.res_0.btnk.conv3.bn.running_var         of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl4.res_0.btnk.conv3.bn.weight              of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl4.res_0.btnk.conv3.conv.weight            of shape (2048, 512, 1, 1, 1)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.shortcut.bn.bias           loaded from backbone.slow.res_nl4.res_0.shortcut.bn.bias                  of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.shortcut.bn.running_mean   loaded from backbone.slow.res_nl4.res_0.shortcut.bn.running_mean          of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.shortcut.bn.running_var    loaded from backbone.slow.res_nl4.res_0.shortcut.bn.running_var           of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.shortcut.bn.weight         loaded from backbone.slow.res_nl4.res_0.shortcut.bn.weight                of shape (2048,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_0.shortcut.conv.weight       loaded from backbone.slow.res_nl4.res_0.shortcut.conv.weight              of shape (2048, 1280, 1, 1, 1)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl4.res_1.btnk.conv1.bn.bias                of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl4.res_1.btnk.conv1.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl4.res_1.btnk.conv1.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl4.res_1.btnk.conv1.bn.weight              of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl4.res_1.btnk.conv1.conv.weight            of shape (512, 2048, 3, 1, 1)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl4.res_1.btnk.conv2.bn.bias                of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl4.res_1.btnk.conv2.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl4.res_1.btnk.conv2.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,118 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl4.res_1.btnk.conv2.bn.weight              of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl4.res_1.btnk.conv2.conv.weight            of shape (512, 512, 1, 3, 3)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl4.res_1.btnk.conv3.bn.bias                of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl4.res_1.btnk.conv3.bn.running_mean        of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl4.res_1.btnk.conv3.bn.running_var         of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl4.res_1.btnk.conv3.bn.weight              of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_1.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl4.res_1.btnk.conv3.conv.weight            of shape (2048, 512, 1, 1, 1)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv1.bn.bias         loaded from backbone.slow.res_nl4.res_2.btnk.conv1.bn.bias                of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv1.bn.running_mean loaded from backbone.slow.res_nl4.res_2.btnk.conv1.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv1.bn.running_var  loaded from backbone.slow.res_nl4.res_2.btnk.conv1.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv1.bn.weight       loaded from backbone.slow.res_nl4.res_2.btnk.conv1.bn.weight              of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv1.conv.weight     loaded from backbone.slow.res_nl4.res_2.btnk.conv1.conv.weight            of shape (512, 2048, 3, 1, 1)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv2.bn.bias         loaded from backbone.slow.res_nl4.res_2.btnk.conv2.bn.bias                of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv2.bn.running_mean loaded from backbone.slow.res_nl4.res_2.btnk.conv2.bn.running_mean        of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv2.bn.running_var  loaded from backbone.slow.res_nl4.res_2.btnk.conv2.bn.running_var         of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv2.bn.weight       loaded from backbone.slow.res_nl4.res_2.btnk.conv2.bn.weight              of shape (512,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv2.conv.weight     loaded from backbone.slow.res_nl4.res_2.btnk.conv2.conv.weight            of shape (512, 512, 1, 3, 3)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv3.bn.bias         loaded from backbone.slow.res_nl4.res_2.btnk.conv3.bn.bias                of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv3.bn.running_mean loaded from backbone.slow.res_nl4.res_2.btnk.conv3.bn.running_mean        of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv3.bn.running_var  loaded from backbone.slow.res_nl4.res_2.btnk.conv3.bn.running_var         of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv3.bn.weight       loaded from backbone.slow.res_nl4.res_2.btnk.conv3.bn.weight              of shape (2048,)
+2022-04-26 14:46:58,119 alphaction.utils.model_serialization INFO: backbone.slow.res_nl4.res_2.btnk.conv3.conv.weight     loaded from backbone.slow.res_nl4.res_2.btnk.conv3.conv.weight            of shape (2048, 512, 1, 1, 1)
+2022-04-26 14:46:58,210 alphaction.trainer INFO: Start training
+2022-04-26 14:47:09,288 alphaction.trainer INFO: eta: 5 days, 15:22:52  iter: 20  loss_pose_action: 2.1605 (2.1742)  loss_object_interaction: 0.0686 (0.0862)  loss_person_interaction: 0.0743 (0.0897)  total_loss: 7.5691 (8.3561)  accuracy_pose_action: 0.0000 (0.0750)  accuracy_object_interaction: 0.5000 (0.4833)  accuracy_person_interaction: 0.5000 (0.4917)  time: 0.4717 (0.5538)  data: 0.0113 (0.0862)  lr: 0.000032  max mem: 2403
+2022-04-26 14:47:18,705 alphaction.trainer INFO: eta: 5 days, 5:13:59  iter: 40  loss_pose_action: 2.0878 (2.1230)  loss_object_interaction: 0.0005 (0.0438)  loss_person_interaction: 0.0004 (0.0455)  total_loss: 2.5413 (5.4664)  accuracy_pose_action: 0.0000 (0.1292)  accuracy_object_interaction: 1.0000 (0.7417)  accuracy_person_interaction: 1.0000 (0.7458)  time: 0.4709 (0.5123)  data: 0.0115 (0.0491)  lr: 0.000033  max mem: 2403
+2022-04-26 14:47:28,189 alphaction.trainer INFO: eta: 5 days, 2:07:19  iter: 60  loss_pose_action: 2.3070 (2.1619)  loss_object_interaction: 0.0004 (0.0294)  loss_person_interaction: 0.0003 (0.0306)  total_loss: 2.8047 (4.5566)  accuracy_pose_action: 0.0000 (0.1111)  accuracy_object_interaction: 1.0000 (0.8278)  accuracy_person_interaction: 1.0000 (0.8306)  time: 0.4735 (0.4996)  data: 0.0116 (0.0367)  lr: 0.000034  max mem: 2403
+2022-04-26 14:47:37,705 alphaction.trainer INFO: eta: 5 days, 0:39:48  iter: 80  loss_pose_action: 1.6845 (2.0319)  loss_object_interaction: 0.0022 (0.0228)  loss_person_interaction: 0.0023 (0.0236)  total_loss: 2.1558 (3.9586)  accuracy_pose_action: 0.3333 (0.1667)  accuracy_object_interaction: 1.0000 (0.8708)  accuracy_person_interaction: 1.0000 (0.8729)  time: 0.4755 (0.4937)  data: 0.0113 (0.0304)  lr: 0.000035  max mem: 2403
+2022-04-26 14:47:47,292 alphaction.trainer INFO: eta: 4 days, 23:57:46  iter: 100  loss_pose_action: 1.0067 (1.8855)  loss_object_interaction: 0.0016 (0.0187)  loss_person_interaction: 0.0016 (0.0194)  total_loss: 1.3341 (3.5095)  accuracy_pose_action: 0.0000 (0.2017)  accuracy_object_interaction: 1.0000 (0.8967)  accuracy_person_interaction: 1.0000 (0.8983)  time: 0.4792 (0.4908)  data: 0.0117 (0.0268)  lr: 0.000036  max mem: 2403
+2022-04-26 14:47:47,296 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000100.pth
+2022-04-26 14:47:47,562 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:47:59,540 alphaction.inference INFO: Total inference time: 0:00:11.977992 (0.10790983621064607 s / video per device, on 1 devices)
+2022-04-26 14:47:59,540 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:47:59,542 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:47:59,556 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:47:59,614 alphaction.inference INFO: ==> 0.0576854 seconds to write file /tmp/tmpo10zgz6_
+2022-04-26 14:47:59,615 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:47:59,615 alphaction.inference INFO: ==> 0.000459909 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:47:59,629 alphaction.inference INFO: ==> 0.0135028 seconds to convert groundtruth
+2022-04-26 14:47:59,648 alphaction.inference INFO: ==> 0.0191548 seconds to read file /tmp/tmpo10zgz6_
+2022-04-26 14:47:59,937 alphaction.inference INFO: ==> 0.288816 seconds to convert detections
+2022-04-26 14:47:59,937 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:47:59,941 alphaction.inference INFO: ==> 0.00371122 seconds to run_evaluator
+2022-04-26 14:47:59,942 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.20837089579480095,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.3029530152236367,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.04040404040404041,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.2347442680776014,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.05874382273234497,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2535564338195917,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.0402046783625731,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.3494988839284673,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.14847867331881104,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.1818838568513186}
+2022-04-26 14:48:09,577 alphaction.trainer INFO: eta: 4 days, 23:35:12  iter: 120  loss_pose_action: 0.9895 (1.7822)  loss_object_interaction: 0.0006 (0.0159)  loss_person_interaction: 0.0005 (0.0164)  total_loss: 1.4419 (3.1937)  accuracy_pose_action: 0.5000 (0.2333)  accuracy_object_interaction: 1.0000 (0.9139)  accuracy_person_interaction: 1.0000 (0.9153)  time: 0.4811 (0.4893)  data: 0.0118 (0.0243)  lr: 0.000037  max mem: 2403
+2022-04-26 14:48:19,238 alphaction.trainer INFO: eta: 4 days, 23:22:01  iter: 140  loss_pose_action: 1.5113 (1.7504)  loss_object_interaction: 0.0002 (0.0137)  loss_person_interaction: 0.0003 (0.0142)  total_loss: 1.8304 (3.0134)  accuracy_pose_action: 0.3333 (0.2524)  accuracy_object_interaction: 1.0000 (0.9262)  accuracy_person_interaction: 1.0000 (0.9274)  time: 0.4833 (0.4884)  data: 0.0117 (0.0226)  lr: 0.000038  max mem: 2403
+2022-04-26 14:48:28,969 alphaction.trainer INFO: eta: 4 days, 23:18:26  iter: 160  loss_pose_action: 1.2714 (1.7381)  loss_object_interaction: 0.0004 (0.0121)  loss_person_interaction: 0.0004 (0.0124)  total_loss: 1.5597 (2.8881)  accuracy_pose_action: 0.0000 (0.2552)  accuracy_object_interaction: 1.0000 (0.9354)  accuracy_person_interaction: 1.0000 (0.9365)  time: 0.4851 (0.4882)  data: 0.0117 (0.0212)  lr: 0.000039  max mem: 2403
+2022-04-26 14:48:38,822 alphaction.trainer INFO: eta: 4 days, 23:25:36  iter: 180  loss_pose_action: 1.3487 (1.7129)  loss_object_interaction: 0.0013 (0.0109)  loss_person_interaction: 0.0013 (0.0113)  total_loss: 1.7624 (2.7812)  accuracy_pose_action: 0.5000 (0.2694)  accuracy_object_interaction: 1.0000 (0.9426)  accuracy_person_interaction: 1.0000 (0.9435)  time: 0.4903 (0.4887)  data: 0.0121 (0.0202)  lr: 0.000040  max mem: 2403
+2022-04-26 14:48:48,747 alphaction.trainer INFO: eta: 4 days, 23:36:31  iter: 200  loss_pose_action: 1.4317 (1.6829)  loss_object_interaction: 0.0007 (0.0099)  loss_person_interaction: 0.0006 (0.0102)  total_loss: 1.7702 (2.6775)  accuracy_pose_action: 0.5000 (0.2825)  accuracy_object_interaction: 1.0000 (0.9483)  accuracy_person_interaction: 1.0000 (0.9492)  time: 0.4945 (0.4894)  data: 0.0120 (0.0195)  lr: 0.000041  max mem: 2403
+2022-04-26 14:48:48,751 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000200.pth
+2022-04-26 14:48:49,020 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:49:00,978 alphaction.inference INFO: Total inference time: 0:00:11.957928 (0.10772908270896019 s / video per device, on 1 devices)
+2022-04-26 14:49:00,978 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:49:00,978 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:49:00,992 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:49:01,045 alphaction.inference INFO: ==> 0.0530264 seconds to write file /tmp/tmp_up7f9nv
+2022-04-26 14:49:01,046 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:49:01,046 alphaction.inference INFO: ==> 0.000520945 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:49:01,059 alphaction.inference INFO: ==> 0.0129991 seconds to convert groundtruth
+2022-04-26 14:49:01,079 alphaction.inference INFO: ==> 0.0192339 seconds to read file /tmp/tmp_up7f9nv
+2022-04-26 14:49:01,369 alphaction.inference INFO: ==> 0.290726 seconds to convert detections
+2022-04-26 14:49:01,370 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:49:01,373 alphaction.inference INFO: ==> 0.00340509 seconds to run_evaluator
+2022-04-26 14:49:01,374 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.36379639451696555,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.16821538940988948,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.03669724770642202,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.11952861952861953,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.09702160053287658,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2630880669539038,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.06451612903225806,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.7073728250527055,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.2051744724169796,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2250456383500689}
+2022-04-26 14:49:11,177 alphaction.trainer INFO: eta: 4 days, 23:37:13  iter: 220  loss_pose_action: 0.8464 (1.6417)  loss_object_interaction: 0.0003 (0.0090)  loss_person_interaction: 0.0002 (0.0093)  total_loss: 1.0279 (2.5712)  accuracy_pose_action: 0.5000 (0.3030)  accuracy_object_interaction: 1.0000 (0.9530)  accuracy_person_interaction: 1.0000 (0.9538)  time: 0.4878 (0.4895)  data: 0.0117 (0.0188)  lr: 0.000042  max mem: 2403
+2022-04-26 14:49:21,124 alphaction.trainer INFO: eta: 4 days, 23:46:40  iter: 240  loss_pose_action: 0.8540 (1.5837)  loss_object_interaction: 0.0002 (0.0083)  loss_person_interaction: 0.0002 (0.0086)  total_loss: 1.0450 (2.4529)  accuracy_pose_action: 0.5000 (0.3160)  accuracy_object_interaction: 1.0000 (0.9569)  accuracy_person_interaction: 1.0000 (0.9576)  time: 0.4986 (0.4901)  data: 0.0123 (0.0183)  lr: 0.000042  max mem: 2403
+2022-04-26 14:49:31,150 alphaction.trainer INFO: eta: 4 days, 23:59:04  iter: 260  loss_pose_action: 1.1333 (1.5673)  loss_object_interaction: 0.0003 (0.0077)  loss_person_interaction: 0.0003 (0.0079)  total_loss: 1.3616 (2.3934)  accuracy_pose_action: 0.0000 (0.3128)  accuracy_object_interaction: 1.0000 (0.9603)  accuracy_person_interaction: 1.0000 (0.9609)  time: 0.5021 (0.4910)  data: 0.0122 (0.0178)  lr: 0.000043  max mem: 2403
+2022-04-26 14:49:41,220 alphaction.trainer INFO: eta: 5 days, 0:12:03  iter: 280  loss_pose_action: 1.0729 (1.5534)  loss_object_interaction: 0.0004 (0.0072)  loss_person_interaction: 0.0004 (0.0074)  total_loss: 1.3212 (2.3429)  accuracy_pose_action: 0.5000 (0.3256)  accuracy_object_interaction: 1.0000 (0.9631)  accuracy_person_interaction: 1.0000 (0.9637)  time: 0.5020 (0.4919)  data: 0.0121 (0.0175)  lr: 0.000044  max mem: 2403
+2022-04-26 14:49:51,300 alphaction.trainer INFO: eta: 5 days, 0:23:42  iter: 300  loss_pose_action: 0.9892 (1.5165)  loss_object_interaction: 0.0005 (0.0068)  loss_person_interaction: 0.0005 (0.0070)  total_loss: 1.2421 (2.2706)  accuracy_pose_action: 0.5000 (0.3369)  accuracy_object_interaction: 1.0000 (0.9656)  accuracy_person_interaction: 1.0000 (0.9661)  time: 0.5006 (0.4927)  data: 0.0124 (0.0171)  lr: 0.000045  max mem: 2403
+2022-04-26 14:49:51,304 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000300.pth
+2022-04-26 14:49:51,566 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:50:03,594 alphaction.inference INFO: Total inference time: 0:00:12.027570 (0.10835649086548402 s / video per device, on 1 devices)
+2022-04-26 14:50:03,594 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:50:03,594 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:50:03,608 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:50:03,661 alphaction.inference INFO: ==> 0.0531893 seconds to write file /tmp/tmpyx5p7692
+2022-04-26 14:50:03,662 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:50:03,662 alphaction.inference INFO: ==> 0.000436544 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:50:03,676 alphaction.inference INFO: ==> 0.013793 seconds to convert groundtruth
+2022-04-26 14:50:03,710 alphaction.inference INFO: ==> 0.0336325 seconds to read file /tmp/tmpyx5p7692
+2022-04-26 14:50:03,996 alphaction.inference INFO: ==> 0.286211 seconds to convert detections
+2022-04-26 14:50:03,997 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:50:04,000 alphaction.inference INFO: ==> 0.00338554 seconds to run_evaluator
+2022-04-26 14:50:04,001 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.3149031255447686,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.3909565718197728,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.12373556675882258,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.24951651158547708,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.027272727272727275,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2801490609239147,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.07142857142857142,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.7176361626148419,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.1984026675979412,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2637778850607597}
+2022-04-26 14:50:13,966 alphaction.trainer INFO: eta: 5 days, 0:28:34  iter: 320  loss_pose_action: 0.5265 (1.4752)  loss_object_interaction: 0.0002 (0.0064)  loss_person_interaction: 0.0001 (0.0066)  total_loss: 0.6576 (2.1937)  accuracy_pose_action: 0.5000 (0.3578)  accuracy_object_interaction: 1.0000 (0.9677)  accuracy_person_interaction: 1.0000 (0.9682)  time: 0.4960 (0.4930)  data: 0.0125 (0.0169)  lr: 0.000046  max mem: 2403
+2022-04-26 14:50:24,046 alphaction.trainer INFO: eta: 5 days, 0:37:50  iter: 340  loss_pose_action: 0.6744 (1.4312)  loss_object_interaction: 0.0002 (0.0060)  loss_person_interaction: 0.0003 (0.0062)  total_loss: 0.8335 (2.1175)  accuracy_pose_action: 0.5000 (0.3667)  accuracy_object_interaction: 1.0000 (0.9696)  accuracy_person_interaction: 1.0000 (0.9701)  time: 0.5023 (0.4937)  data: 0.0122 (0.0166)  lr: 0.000047  max mem: 2403
+2022-04-26 14:50:34,128 alphaction.trainer INFO: eta: 5 days, 0:46:09  iter: 360  loss_pose_action: 1.0115 (1.4090)  loss_object_interaction: 0.0001 (0.0057)  loss_person_interaction: 0.0001 (0.0059)  total_loss: 1.2532 (2.0694)  accuracy_pose_action: 0.5000 (0.3711)  accuracy_object_interaction: 1.0000 (0.9713)  accuracy_person_interaction: 1.0000 (0.9718)  time: 0.5024 (0.4943)  data: 0.0124 (0.0164)  lr: 0.000048  max mem: 2403
+2022-04-26 14:50:44,271 alphaction.trainer INFO: eta: 5 days, 0:55:56  iter: 380  loss_pose_action: 0.6564 (1.3805)  loss_object_interaction: 0.0002 (0.0054)  loss_person_interaction: 0.0001 (0.0056)  total_loss: 0.7993 (2.0160)  accuracy_pose_action: 0.5000 (0.3783)  accuracy_object_interaction: 1.0000 (0.9728)  accuracy_person_interaction: 1.0000 (0.9732)  time: 0.5088 (0.4949)  data: 0.0124 (0.0162)  lr: 0.000049  max mem: 2403
+2022-04-26 14:50:54,434 alphaction.trainer INFO: eta: 5 days, 1:05:29  iter: 400  loss_pose_action: 0.7300 (1.3535)  loss_object_interaction: 0.0002 (0.0051)  loss_person_interaction: 0.0001 (0.0053)  total_loss: 0.8864 (1.9663)  accuracy_pose_action: 0.5000 (0.3810)  accuracy_object_interaction: 1.0000 (0.9742)  accuracy_person_interaction: 1.0000 (0.9746)  time: 0.5079 (0.4956)  data: 0.0124 (0.0160)  lr: 0.000050  max mem: 2403
+2022-04-26 14:50:54,437 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000400.pth
+2022-04-26 14:50:54,702 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:51:06,869 alphaction.inference INFO: Total inference time: 0:00:12.166908 (0.10961177971985964 s / video per device, on 1 devices)
+2022-04-26 14:51:06,869 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:51:06,869 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:51:06,883 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:51:06,936 alphaction.inference INFO: ==> 0.0532317 seconds to write file /tmp/tmpnwo1t_l1
+2022-04-26 14:51:06,937 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:51:06,937 alphaction.inference INFO: ==> 0.000585079 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:51:06,951 alphaction.inference INFO: ==> 0.0131538 seconds to convert groundtruth
+2022-04-26 14:51:06,971 alphaction.inference INFO: ==> 0.0196149 seconds to read file /tmp/tmpnwo1t_l1
+2022-04-26 14:51:07,254 alphaction.inference INFO: ==> 0.283259 seconds to convert detections
+2022-04-26 14:51:07,254 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:51:07,259 alphaction.inference INFO: ==> 0.00483322 seconds to run_evaluator
+2022-04-26 14:51:07,260 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.3442220712279944,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.3959538913038377,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.04938271604938271,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.1652892729175951,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.037249970056294164,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2683097780303159,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.037037037037037035,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.7084850086538942,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.14960629921259844,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2395040049432166}
+2022-04-26 14:51:17,240 alphaction.trainer INFO: eta: 5 days, 1:07:38  iter: 420  loss_pose_action: 1.0203 (1.3517)  loss_object_interaction: 0.0006 (0.0049)  loss_person_interaction: 0.0005 (0.0051)  total_loss: 1.2942 (1.9504)  accuracy_pose_action: 0.5000 (0.3869)  accuracy_object_interaction: 1.0000 (0.9754)  accuracy_person_interaction: 1.0000 (0.9758)  time: 0.4952 (0.4958)  data: 0.0127 (0.0159)  lr: 0.000051  max mem: 2403
+2022-04-26 14:51:27,361 alphaction.trainer INFO: eta: 5 days, 1:14:19  iter: 440  loss_pose_action: 0.4381 (1.3134)  loss_object_interaction: 0.0002 (0.0047)  loss_person_interaction: 0.0002 (0.0049)  total_loss: 0.5325 (1.8909)  accuracy_pose_action: 0.5000 (0.4019)  accuracy_object_interaction: 1.0000 (0.9765)  accuracy_person_interaction: 1.0000 (0.9769)  time: 0.5053 (0.4962)  data: 0.0128 (0.0157)  lr: 0.000052  max mem: 2403
+2022-04-26 14:51:37,484 alphaction.trainer INFO: eta: 5 days, 1:20:28  iter: 460  loss_pose_action: 0.8270 (1.3075)  loss_object_interaction: 0.0003 (0.0045)  loss_person_interaction: 0.0002 (0.0047)  total_loss: 1.0131 (1.8714)  accuracy_pose_action: 0.5000 (0.4060)  accuracy_object_interaction: 1.0000 (0.9775)  accuracy_person_interaction: 1.0000 (0.9779)  time: 0.5089 (0.4967)  data: 0.0129 (0.0156)  lr: 0.000053  max mem: 2403
+2022-04-26 14:51:47,677 alphaction.trainer INFO: eta: 5 days, 1:28:15  iter: 480  loss_pose_action: 0.6385 (1.2904)  loss_object_interaction: 0.0004 (0.0044)  loss_person_interaction: 0.0003 (0.0045)  total_loss: 0.8118 (1.8403)  accuracy_pose_action: 0.5000 (0.4144)  accuracy_object_interaction: 1.0000 (0.9785)  accuracy_person_interaction: 1.0000 (0.9788)  time: 0.5121 (0.4972)  data: 0.0128 (0.0155)  lr: 0.000054  max mem: 2403
+2022-04-26 14:51:57,932 alphaction.trainer INFO: eta: 5 days, 1:37:12  iter: 500  loss_pose_action: 0.6305 (1.2720)  loss_object_interaction: 0.0002 (0.0042)  loss_person_interaction: 0.0003 (0.0044)  total_loss: 0.9485 (1.8079)  accuracy_pose_action: 0.5000 (0.4208)  accuracy_object_interaction: 1.0000 (0.9793)  accuracy_person_interaction: 1.0000 (0.9797)  time: 0.5134 (0.4978)  data: 0.0127 (0.0154)  lr: 0.000055  max mem: 2403
+2022-04-26 14:51:57,935 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000500.pth
+2022-04-26 14:51:58,197 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:52:10,002 alphaction.inference INFO: Total inference time: 0:00:11.805420 (0.10635513872713656 s / video per device, on 1 devices)
+2022-04-26 14:52:10,003 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:52:10,003 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:52:10,016 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:52:10,069 alphaction.inference INFO: ==> 0.052336 seconds to write file /tmp/tmp3twhlmgk
+2022-04-26 14:52:10,069 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:52:10,070 alphaction.inference INFO: ==> 0.000519514 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:52:10,084 alphaction.inference INFO: ==> 0.0136712 seconds to convert groundtruth
+2022-04-26 14:52:10,104 alphaction.inference INFO: ==> 0.0200288 seconds to read file /tmp/tmp3twhlmgk
+2022-04-26 14:52:10,382 alphaction.inference INFO: ==> 0.277849 seconds to convert detections
+2022-04-26 14:52:10,382 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:52:10,385 alphaction.inference INFO: ==> 0.00333238 seconds to run_evaluator
+2022-04-26 14:52:10,386 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.3600283111673179,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.4543886224799574,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.07032163742690058,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.10246029780709325,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.047619047619047616,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.3359744049134177,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.048642533936651584,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.7350530544724093,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.3977655996530843,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.28358372327509773}
+2022-04-26 14:52:20,488 alphaction.trainer INFO: eta: 5 days, 1:41:06  iter: 520  loss_pose_action: 0.9722 (1.2616)  loss_object_interaction: 0.0002 (0.0041)  loss_person_interaction: 0.0002 (0.0042)  total_loss: 1.1713 (1.7854)  accuracy_pose_action: 0.3333 (0.4239)  accuracy_object_interaction: 1.0000 (0.9801)  accuracy_person_interaction: 1.0000 (0.9804)  time: 0.4994 (0.4981)  data: 0.0127 (0.0153)  lr: 0.000056  max mem: 2403
+2022-04-26 14:52:30,590 alphaction.trainer INFO: eta: 5 days, 1:44:43  iter: 540  loss_pose_action: 0.8666 (1.2459)  loss_object_interaction: 0.0003 (0.0039)  loss_person_interaction: 0.0002 (0.0041)  total_loss: 1.0447 (1.7571)  accuracy_pose_action: 0.5000 (0.4289)  accuracy_object_interaction: 1.0000 (0.9809)  accuracy_person_interaction: 1.0000 (0.9812)  time: 0.5042 (0.4984)  data: 0.0128 (0.0152)  lr: 0.000057  max mem: 2403
+2022-04-26 14:52:40,730 alphaction.trainer INFO: eta: 5 days, 1:49:05  iter: 560  loss_pose_action: 0.7773 (1.2412)  loss_object_interaction: 0.0004 (0.0038)  loss_person_interaction: 0.0004 (0.0039)  total_loss: 0.9757 (1.7432)  accuracy_pose_action: 0.5000 (0.4313)  accuracy_object_interaction: 1.0000 (0.9815)  accuracy_person_interaction: 1.0000 (0.9818)  time: 0.5105 (0.4987)  data: 0.0127 (0.0152)  lr: 0.000057  max mem: 2403
+2022-04-26 14:52:50,952 alphaction.trainer INFO: eta: 5 days, 1:55:13  iter: 580  loss_pose_action: 0.4679 (1.2196)  loss_object_interaction: 0.0002 (0.0037)  loss_person_interaction: 0.0001 (0.0038)  total_loss: 0.5689 (1.7093)  accuracy_pose_action: 0.5000 (0.4356)  accuracy_object_interaction: 1.0000 (0.9822)  accuracy_person_interaction: 1.0000 (0.9825)  time: 0.5130 (0.4991)  data: 0.0129 (0.0151)  lr: 0.000058  max mem: 2403
+2022-04-26 14:53:01,206 alphaction.trainer INFO: eta: 5 days, 2:01:41  iter: 600  loss_pose_action: 0.4199 (1.2008)  loss_object_interaction: 0.0002 (0.0036)  loss_person_interaction: 0.0002 (0.0037)  total_loss: 0.5658 (1.6795)  accuracy_pose_action: 0.6667 (0.4439)  accuracy_object_interaction: 1.0000 (0.9828)  accuracy_person_interaction: 1.0000 (0.9831)  time: 0.5126 (0.4995)  data: 0.0130 (0.0150)  lr: 0.000059  max mem: 2403
+2022-04-26 14:53:01,210 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000600.pth
+2022-04-26 14:53:01,475 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:53:13,305 alphaction.inference INFO: Total inference time: 0:00:11.829188 (0.10656926223823616 s / video per device, on 1 devices)
+2022-04-26 14:53:13,305 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:53:13,305 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:53:13,319 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:53:13,373 alphaction.inference INFO: ==> 0.0533271 seconds to write file /tmp/tmpu6dhnsmh
+2022-04-26 14:53:13,373 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:53:13,374 alphaction.inference INFO: ==> 0.000529289 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:53:13,390 alphaction.inference INFO: ==> 0.0160615 seconds to convert groundtruth
+2022-04-26 14:53:13,410 alphaction.inference INFO: ==> 0.0196548 seconds to read file /tmp/tmpu6dhnsmh
+2022-04-26 14:53:13,696 alphaction.inference INFO: ==> 0.285975 seconds to convert detections
+2022-04-26 14:53:13,696 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:53:13,699 alphaction.inference INFO: ==> 0.00337315 seconds to run_evaluator
+2022-04-26 14:53:13,700 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.3542567955155691,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.2658648965772,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.03225806451612903,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.2815974874798404,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.025158533223049354,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2727708430691045,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.027222222222222224,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.6524147574263836,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.29746436186529196,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.24544532909942113}
+2022-04-26 14:53:23,775 alphaction.trainer INFO: eta: 5 days, 2:03:27  iter: 620  loss_pose_action: 0.5393 (1.1851)  loss_object_interaction: 0.0003 (0.0035)  loss_person_interaction: 0.0003 (0.0036)  total_loss: 0.6743 (1.6535)  accuracy_pose_action: 0.5000 (0.4484)  accuracy_object_interaction: 1.0000 (0.9833)  accuracy_person_interaction: 1.0000 (0.9836)  time: 0.5015 (0.4997)  data: 0.0126 (0.0150)  lr: 0.000060  max mem: 2403
+2022-04-26 14:53:33,976 alphaction.trainer INFO: eta: 5 days, 2:08:02  iter: 640  loss_pose_action: 0.5168 (1.1761)  loss_object_interaction: 0.0005 (0.0034)  loss_person_interaction: 0.0004 (0.0035)  total_loss: 0.6660 (1.6369)  accuracy_pose_action: 0.5000 (0.4533)  accuracy_object_interaction: 1.0000 (0.9839)  accuracy_person_interaction: 1.0000 (0.9841)  time: 0.5129 (0.5000)  data: 0.0129 (0.0149)  lr: 0.000061  max mem: 2403
+2022-04-26 14:53:44,145 alphaction.trainer INFO: eta: 5 days, 2:11:38  iter: 660  loss_pose_action: 0.5768 (1.1653)  loss_object_interaction: 0.0004 (0.0033)  loss_person_interaction: 0.0004 (0.0034)  total_loss: 0.7192 (1.6183)  accuracy_pose_action: 0.5000 (0.4572)  accuracy_object_interaction: 1.0000 (0.9843)  accuracy_person_interaction: 1.0000 (0.9846)  time: 0.5122 (0.5003)  data: 0.0131 (0.0149)  lr: 0.000062  max mem: 2403
+2022-04-26 14:53:54,344 alphaction.trainer INFO: eta: 5 days, 2:15:39  iter: 680  loss_pose_action: 0.3018 (1.1462)  loss_object_interaction: 0.0001 (0.0032)  loss_person_interaction: 0.0002 (0.0033)  total_loss: 0.3809 (1.5892)  accuracy_pose_action: 0.6667 (0.4646)  accuracy_object_interaction: 1.0000 (0.9848)  accuracy_person_interaction: 1.0000 (0.9850)  time: 0.5134 (0.5005)  data: 0.0130 (0.0148)  lr: 0.000063  max mem: 2403
+2022-04-26 14:54:04,534 alphaction.trainer INFO: eta: 5 days, 2:19:13  iter: 700  loss_pose_action: 0.1093 (1.1229)  loss_object_interaction: 0.0001 (0.0031)  loss_person_interaction: 0.0001 (0.0032)  total_loss: 0.1485 (1.5556)  accuracy_pose_action: 1.0000 (0.4732)  accuracy_object_interaction: 1.0000 (0.9852)  accuracy_person_interaction: 1.0000 (0.9855)  time: 0.5125 (0.5008)  data: 0.0128 (0.0148)  lr: 0.000064  max mem: 2403
+2022-04-26 14:54:04,537 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000700.pth
+2022-04-26 14:54:04,797 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:54:16,995 alphaction.inference INFO: Total inference time: 0:00:12.197721 (0.1098893827146238 s / video per device, on 1 devices)
+2022-04-26 14:54:16,995 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:54:16,995 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:54:17,009 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:54:17,065 alphaction.inference INFO: ==> 0.0550325 seconds to write file /tmp/tmphqhk_tyt
+2022-04-26 14:54:17,065 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:54:17,066 alphaction.inference INFO: ==> 0.000532627 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:54:17,080 alphaction.inference INFO: ==> 0.0145636 seconds to convert groundtruth
+2022-04-26 14:54:17,103 alphaction.inference INFO: ==> 0.0228789 seconds to read file /tmp/tmphqhk_tyt
+2022-04-26 14:54:17,392 alphaction.inference INFO: ==> 0.288898 seconds to convert detections
+2022-04-26 14:54:17,393 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:54:17,396 alphaction.inference INFO: ==> 0.00342584 seconds to run_evaluator
+2022-04-26 14:54:17,397 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.40766914320309666,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.3830467145469786,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.0425531914893617,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.19757094757094756,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.04227234753550543,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2482738095238095,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.08781362007168458,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.7065283254347255,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.42566704131953226,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2823772378550713}
+2022-04-26 14:54:27,493 alphaction.trainer INFO: eta: 5 days, 2:20:38  iter: 720  loss_pose_action: 0.3087 (1.1033)  loss_object_interaction: 0.0001 (0.0030)  loss_person_interaction: 0.0001 (0.0031)  total_loss: 0.3876 (1.5265)  accuracy_pose_action: 0.6667 (0.4809)  accuracy_object_interaction: 1.0000 (0.9856)  accuracy_person_interaction: 1.0000 (0.9859)  time: 0.5035 (0.5009)  data: 0.0125 (0.0147)  lr: 0.000065  max mem: 2403
+2022-04-26 14:54:37,631 alphaction.trainer INFO: eta: 5 days, 2:22:51  iter: 740  loss_pose_action: 0.6035 (1.0951)  loss_object_interaction: 0.0001 (0.0030)  loss_person_interaction: 0.0001 (0.0031)  total_loss: 0.7295 (1.5115)  accuracy_pose_action: 0.5000 (0.4855)  accuracy_object_interaction: 1.0000 (0.9860)  accuracy_person_interaction: 1.0000 (0.9863)  time: 0.5071 (0.5011)  data: 0.0125 (0.0147)  lr: 0.000066  max mem: 2403
+2022-04-26 14:54:47,829 alphaction.trainer INFO: eta: 5 days, 2:26:06  iter: 760  loss_pose_action: 0.2426 (1.0809)  loss_object_interaction: 0.0002 (0.0029)  loss_person_interaction: 0.0002 (0.0030)  total_loss: 0.3190 (1.4898)  accuracy_pose_action: 0.6667 (0.4916)  accuracy_object_interaction: 1.0000 (0.9864)  accuracy_person_interaction: 1.0000 (0.9866)  time: 0.5132 (0.5013)  data: 0.0128 (0.0146)  lr: 0.000067  max mem: 2403
+2022-04-26 14:54:58,036 alphaction.trainer INFO: eta: 5 days, 2:29:19  iter: 780  loss_pose_action: 0.4030 (1.0671)  loss_object_interaction: 0.0002 (0.0028)  loss_person_interaction: 0.0002 (0.0029)  total_loss: 0.4867 (1.4691)  accuracy_pose_action: 0.5000 (0.4948)  accuracy_object_interaction: 1.0000 (0.9868)  accuracy_person_interaction: 1.0000 (0.9870)  time: 0.5144 (0.5015)  data: 0.0131 (0.0146)  lr: 0.000068  max mem: 2403
+2022-04-26 14:55:08,274 alphaction.trainer INFO: eta: 5 days, 2:32:56  iter: 800  loss_pose_action: 0.3907 (1.0606)  loss_object_interaction: 0.0004 (0.0028)  loss_person_interaction: 0.0004 (0.0029)  total_loss: 0.4977 (1.4574)  accuracy_pose_action: 0.5000 (0.4974)  accuracy_object_interaction: 1.0000 (0.9871)  accuracy_person_interaction: 1.0000 (0.9873)  time: 0.5125 (0.5018)  data: 0.0129 (0.0146)  lr: 0.000069  max mem: 2403
+2022-04-26 14:55:08,276 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000800.pth
+2022-04-26 14:55:08,534 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:55:20,520 alphaction.inference INFO: Total inference time: 0:00:11.985785 (0.10798004511240367 s / video per device, on 1 devices)
+2022-04-26 14:55:20,520 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:55:20,520 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:55:20,534 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:55:20,587 alphaction.inference INFO: ==> 0.0530965 seconds to write file /tmp/tmpzjoq4t98
+2022-04-26 14:55:20,588 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:55:20,588 alphaction.inference INFO: ==> 0.000520945 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:55:20,602 alphaction.inference INFO: ==> 0.0129955 seconds to convert groundtruth
+2022-04-26 14:55:20,621 alphaction.inference INFO: ==> 0.0192146 seconds to read file /tmp/tmpzjoq4t98
+2022-04-26 14:55:20,903 alphaction.inference INFO: ==> 0.281643 seconds to convert detections
+2022-04-26 14:55:20,903 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:55:20,906 alphaction.inference INFO: ==> 0.0033474 seconds to run_evaluator
+2022-04-26 14:55:20,907 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.4198772153764902,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.1533380528226316,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.0632569558101473,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.12897937820494848,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.04225352112676056,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.35413832103452036,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.026754075124025514,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.8750275213419669,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.4073582981333856,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2745537043305419}
+2022-04-26 14:55:30,984 alphaction.trainer INFO: eta: 5 days, 2:33:28  iter: 820  loss_pose_action: 0.3685 (1.0552)  loss_object_interaction: 0.0005 (0.0027)  loss_person_interaction: 0.0006 (0.0028)  total_loss: 0.4573 (1.4476)  accuracy_pose_action: 0.5000 (0.5002)  accuracy_object_interaction: 1.0000 (0.9874)  accuracy_person_interaction: 1.0000 (0.9876)  time: 0.5025 (0.5018)  data: 0.0128 (0.0145)  lr: 0.000070  max mem: 2403
+2022-04-26 14:55:41,150 alphaction.trainer INFO: eta: 5 days, 2:35:34  iter: 840  loss_pose_action: 0.2078 (1.0432)  loss_object_interaction: 0.0002 (0.0027)  loss_person_interaction: 0.0003 (0.0028)  total_loss: 0.2666 (1.4298)  accuracy_pose_action: 0.7500 (0.5057)  accuracy_object_interaction: 1.0000 (0.9877)  accuracy_person_interaction: 1.0000 (0.9879)  time: 0.5119 (0.5020)  data: 0.0129 (0.0145)  lr: 0.000071  max mem: 2403
+2022-04-26 14:55:51,343 alphaction.trainer INFO: eta: 5 days, 2:38:00  iter: 860  loss_pose_action: 0.3148 (1.0304)  loss_object_interaction: 0.0002 (0.0026)  loss_person_interaction: 0.0001 (0.0027)  total_loss: 0.3817 (1.4104)  accuracy_pose_action: 0.5000 (0.5092)  accuracy_object_interaction: 1.0000 (0.9880)  accuracy_person_interaction: 1.0000 (0.9882)  time: 0.5112 (0.5022)  data: 0.0134 (0.0145)  lr: 0.000072  max mem: 2403
+2022-04-26 14:56:01,532 alphaction.trainer INFO: eta: 5 days, 2:40:15  iter: 880  loss_pose_action: 0.1499 (1.0146)  loss_object_interaction: 0.0000 (0.0026)  loss_person_interaction: 0.0001 (0.0026)  total_loss: 0.1878 (1.3877)  accuracy_pose_action: 1.0000 (0.5151)  accuracy_object_interaction: 1.0000 (0.9883)  accuracy_person_interaction: 1.0000 (0.9884)  time: 0.5125 (0.5023)  data: 0.0129 (0.0144)  lr: 0.000072  max mem: 2403
+2022-04-26 14:56:11,761 alphaction.trainer INFO: eta: 5 days, 2:43:03  iter: 900  loss_pose_action: 0.2227 (1.0057)  loss_object_interaction: 0.0001 (0.0025)  loss_person_interaction: 0.0001 (0.0026)  total_loss: 0.2690 (1.3736)  accuracy_pose_action: 1.0000 (0.5190)  accuracy_object_interaction: 1.0000 (0.9885)  accuracy_person_interaction: 1.0000 (0.9887)  time: 0.5125 (0.5025)  data: 0.0132 (0.0144)  lr: 0.000073  max mem: 2403
+2022-04-26 14:56:11,783 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0000900.pth
+2022-04-26 14:56:12,039 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:56:24,187 alphaction.inference INFO: Total inference time: 0:00:12.147330 (0.10943540152128753 s / video per device, on 1 devices)
+2022-04-26 14:56:24,187 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:56:24,187 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:56:24,201 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:56:24,253 alphaction.inference INFO: ==> 0.0518665 seconds to write file /tmp/tmpk56xv8ff
+2022-04-26 14:56:24,253 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:56:24,254 alphaction.inference INFO: ==> 0.000430822 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:56:24,267 alphaction.inference INFO: ==> 0.0133836 seconds to convert groundtruth
+2022-04-26 14:56:24,286 alphaction.inference INFO: ==> 0.0192199 seconds to read file /tmp/tmpk56xv8ff
+2022-04-26 14:56:24,570 alphaction.inference INFO: ==> 0.283313 seconds to convert detections
+2022-04-26 14:56:24,570 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:56:24,575 alphaction.inference INFO: ==> 0.00491691 seconds to run_evaluator
+2022-04-26 14:56:24,576 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.4023355996447228,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.24542233560090707,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.06557377049180328,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.12059178743961353,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.050980392156862744,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.2875425300169027,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.047619047619047616,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.7833955138772223,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.3154461114213436,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2576563431409362}
+2022-04-26 14:56:34,683 alphaction.trainer INFO: eta: 5 days, 2:43:45  iter: 920  loss_pose_action: 0.1640 (0.9906)  loss_object_interaction: 0.0001 (0.0025)  loss_person_interaction: 0.0002 (0.0025)  total_loss: 0.1985 (1.3521)  accuracy_pose_action: 1.0000 (0.5251)  accuracy_object_interaction: 1.0000 (0.9888)  accuracy_person_interaction: 1.0000 (0.9889)  time: 0.5033 (0.5026)  data: 0.0127 (0.0144)  lr: 0.000074  max mem: 2403
+2022-04-26 14:56:44,876 alphaction.trainer INFO: eta: 5 days, 2:45:47  iter: 940  loss_pose_action: 0.0326 (0.9745)  loss_object_interaction: 0.0001 (0.0024)  loss_person_interaction: 0.0001 (0.0025)  total_loss: 0.0419 (1.3294)  accuracy_pose_action: 1.0000 (0.5326)  accuracy_object_interaction: 1.0000 (0.9890)  accuracy_person_interaction: 1.0000 (0.9892)  time: 0.5130 (0.5028)  data: 0.0127 (0.0144)  lr: 0.000075  max mem: 2403
+2022-04-26 14:56:55,124 alphaction.trainer INFO: eta: 5 days, 2:48:34  iter: 960  loss_pose_action: 0.1363 (0.9633)  loss_object_interaction: 0.0001 (0.0024)  loss_person_interaction: 0.0001 (0.0024)  total_loss: 0.1776 (1.3128)  accuracy_pose_action: 1.0000 (0.5368)  accuracy_object_interaction: 1.0000 (0.9892)  accuracy_person_interaction: 1.0000 (0.9894)  time: 0.5162 (0.5030)  data: 0.0125 (0.0143)  lr: 0.000076  max mem: 2403
+2022-04-26 14:57:05,318 alphaction.trainer INFO: eta: 5 days, 2:50:25  iter: 980  loss_pose_action: 0.4174 (0.9599)  loss_object_interaction: 0.0001 (0.0023)  loss_person_interaction: 0.0001 (0.0024)  total_loss: 0.6333 (1.3060)  accuracy_pose_action: 0.6667 (0.5388)  accuracy_object_interaction: 1.0000 (0.9895)  accuracy_person_interaction: 1.0000 (0.9896)  time: 0.5101 (0.5031)  data: 0.0123 (0.0143)  lr: 0.000077  max mem: 2403
+2022-04-26 14:57:15,565 alphaction.trainer INFO: eta: 5 days, 2:52:57  iter: 1000  loss_pose_action: 0.0893 (0.9493)  loss_object_interaction: 0.0001 (0.0023)  loss_person_interaction: 0.0001 (0.0023)  total_loss: 0.1128 (1.2905)  accuracy_pose_action: 1.0000 (0.5432)  accuracy_object_interaction: 1.0000 (0.9897)  accuracy_person_interaction: 1.0000 (0.9898)  time: 0.5128 (0.5033)  data: 0.0120 (0.0143)  lr: 0.000078  max mem: 2403
+2022-04-26 14:57:15,569 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0001000.pth
+2022-04-26 14:57:15,832 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:57:28,485 alphaction.inference INFO: Total inference time: 0:00:12.652848 (0.11398962596515277 s / video per device, on 1 devices)
+2022-04-26 14:57:28,485 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:57:28,485 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:57:28,500 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:57:28,570 alphaction.inference INFO: ==> 0.0696609 seconds to write file /tmp/tmpzrfjqwno
+2022-04-26 14:57:28,570 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:57:28,571 alphaction.inference INFO: ==> 0.00046277 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:57:28,585 alphaction.inference INFO: ==> 0.0136783 seconds to convert groundtruth
+2022-04-26 14:57:28,608 alphaction.inference INFO: ==> 0.0235109 seconds to read file /tmp/tmpzrfjqwno
+2022-04-26 14:57:28,897 alphaction.inference INFO: ==> 0.288664 seconds to convert detections
+2022-04-26 14:57:28,897 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:57:28,900 alphaction.inference INFO: ==> 0.00332093 seconds to run_evaluator
+2022-04-26 14:57:28,901 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.42054273952275933,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.3393038992172695,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.047058823529411764,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.12577536886479976,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.047619047619047616,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.4076564872349041,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.031754032258064516,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.8788596963093744,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.21958380480032713,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2797948777062176}
+2022-04-26 14:57:38,989 alphaction.trainer INFO: eta: 5 days, 2:53:04  iter: 1020  loss_pose_action: 0.2949 (0.9427)  loss_object_interaction: 0.0002 (0.0022)  loss_person_interaction: 0.0002 (0.0023)  total_loss: 0.3615 (1.2800)  accuracy_pose_action: 0.6667 (0.5464)  accuracy_object_interaction: 1.0000 (0.9899)  accuracy_person_interaction: 1.0000 (0.9900)  time: 0.5035 (0.5033)  data: 0.0122 (0.0142)  lr: 0.000079  max mem: 2403
+2022-04-26 14:57:49,157 alphaction.trainer INFO: eta: 5 days, 2:54:21  iter: 1040  loss_pose_action: 0.2543 (0.9347)  loss_object_interaction: 0.0003 (0.0022)  loss_person_interaction: 0.0003 (0.0023)  total_loss: 0.3230 (1.2679)  accuracy_pose_action: 0.6667 (0.5497)  accuracy_object_interaction: 1.0000 (0.9901)  accuracy_person_interaction: 1.0000 (0.9902)  time: 0.5130 (0.5034)  data: 0.0124 (0.0142)  lr: 0.000080  max mem: 2403
+2022-04-26 14:57:59,376 alphaction.trainer INFO: eta: 5 days, 2:56:16  iter: 1060  loss_pose_action: 0.1270 (0.9276)  loss_object_interaction: 0.0001 (0.0022)  loss_person_interaction: 0.0001 (0.0022)  total_loss: 0.1619 (1.2568)  accuracy_pose_action: 0.6667 (0.5520)  accuracy_object_interaction: 1.0000 (0.9903)  accuracy_person_interaction: 1.0000 (0.9904)  time: 0.5122 (0.5035)  data: 0.0130 (0.0142)  lr: 0.000081  max mem: 2403
+2022-04-26 14:58:09,622 alphaction.trainer INFO: eta: 5 days, 2:58:29  iter: 1080  loss_pose_action: 0.4336 (0.9217)  loss_object_interaction: 0.0003 (0.0021)  loss_person_interaction: 0.0004 (0.0022)  total_loss: 0.6788 (1.2479)  accuracy_pose_action: 0.5000 (0.5526)  accuracy_object_interaction: 1.0000 (0.9904)  accuracy_person_interaction: 1.0000 (0.9906)  time: 0.5124 (0.5037)  data: 0.0124 (0.0142)  lr: 0.000082  max mem: 2403
+2022-04-26 14:58:19,872 alphaction.trainer INFO: eta: 5 days, 3:00:39  iter: 1100  loss_pose_action: 0.1472 (0.9121)  loss_object_interaction: 0.0002 (0.0021)  loss_person_interaction: 0.0002 (0.0022)  total_loss: 0.1815 (1.2341)  accuracy_pose_action: 1.0000 (0.5576)  accuracy_object_interaction: 1.0000 (0.9906)  accuracy_person_interaction: 1.0000 (0.9908)  time: 0.5129 (0.5039)  data: 0.0128 (0.0141)  lr: 0.000083  max mem: 2403
+2022-04-26 14:58:19,876 alphaction.utils.checkpoint INFO: Saving checkpoint to data/output/resnet50_4x16f_baseline_massa/model_0001100.pth
+2022-04-26 14:58:20,132 alphaction.inference INFO: Start evaluation on lfv_massa_val_ava_video dataset(111 videos).
+2022-04-26 14:58:32,120 alphaction.inference INFO: Total inference time: 0:00:11.987640 (0.10799675589209204 s / video per device, on 1 devices)
+2022-04-26 14:58:32,120 alphaction.inference INFO: performing ava evaluation.
+2022-04-26 14:58:32,120 alphaction.inference INFO: Preparing results for AVA format
+2022-04-26 14:58:32,134 alphaction.inference INFO: Evaluating predictions
+2022-04-26 14:58:32,191 alphaction.inference INFO: ==> 0.0561886 seconds to write file /tmp/tmp324yrs6n
+2022-04-26 14:58:32,191 alphaction.inference INFO: CATEGORIES (12):
+[ {'id': 1, 'name': 'cut (an object)'},
+  {'id': 2, 'name': 'holding for (a person)'},
+  {'id': 3, 'name': 'handover to (a person)'},
+  {'id': 4, 'name': 'squeeze (an object)'},
+  {'id': 5, 'name': 'sprinkle (an object)'},
+  {'id': 6, 'name': 'transfer (an object)'},
+  {'id': 7, 'name': 'pour (an object)'},
+  {'id': 8, 'name': 'heat (an object)'},
+  {'id': 9, 'name': 'stir (an object)'},
+  {'id': 10, 'name': 'wrap (an object)'},
+  {'id': 11, 'name': 'roll (an object)'},
+  {'id': 12, 'name': 'dip (an object)'}]
+2022-04-26 14:58:32,192 alphaction.inference INFO: ==> 0.00053215 seconds to read file data/lfv_massa/annotations/lfv_massa_val.csv
+2022-04-26 14:58:32,205 alphaction.inference INFO: ==> 0.0134733 seconds to convert groundtruth
+2022-04-26 14:58:32,225 alphaction.inference INFO: ==> 0.0197446 seconds to read file /tmp/tmp324yrs6n
+2022-04-26 14:58:32,508 alphaction.inference INFO: ==> 0.282494 seconds to convert detections
+2022-04-26 14:58:32,508 alphaction.inference INFO: The following classes have no ground truth examples: [10 11 12]
+2022-04-26 14:58:32,512 alphaction.inference INFO: ==> 0.00346613 seconds to run_evaluator
+2022-04-26 14:58:32,512 alphaction.inference INFO: { 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.3411366727982109,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': 0.4704653017266036,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.03333333333333333,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': 0.15700349289879825,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.057692307692307696,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.34182581025974346,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.06559139784946236,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.8219343906757297,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.2774910280674454,
+  'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+  'PascalBoxes_Precision/mAP@0.5IOU': 0.2851637483668483}
+2022-04-26 14:58:42,660 alphaction.trainer INFO: eta: 5 days, 3:01:23  iter: 1120  loss_pose_action: 0.7458 (0.9131)  loss_object_interaction: 0.0004 (0.0021)  loss_person_interaction: 0.0004 (0.0021)  total_loss: 0.9997 (1.2336)  accuracy_pose_action: 0.5000 (0.5580)  accuracy_object_interaction: 1.0000 (0.9908)  accuracy_person_interaction: 1.0000 (0.9909)  time: 0.5051 (0.5039)  data: 0.0125 (0.0141)  lr: 0.000084  max mem: 2403

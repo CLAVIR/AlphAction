@@ -1,0 +1,13 @@
+{'PascalBoxes_PerformanceByCategory/AP@0.5IOU/cut (an object)': 0.7363498014805406,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/dip (an object)': nan,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/handover to (a person)': nan,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/heat (an object)': 0.7598345988728069,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/holding for (a person)': nan,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/pour (an object)': 0.09444444444444446,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/roll (an object)': nan,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/sprinkle (an object)': 0.029411764705882353,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/squeeze (an object)': 0.08021063258217406,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/stir (an object)': 0.418402110709803,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/transfer (an object)': 0.4960613263922793,
+ 'PascalBoxes_PerformanceByCategory/AP@0.5IOU/wrap (an object)': nan,
+ 'PascalBoxes_Precision/mAP@0.5IOU': 0.37353066845541866}
