@@ -8,6 +8,8 @@ def generate_detect_bbox(
         score=0.99, global_category_id=None, frame_size=None,
         frame_rate=25
 ):
+    video2delta = {'peixe': 7, 'massa': 56, 'rissois': 38, 'rita': 51, 'robalo': 7, 'sal': 7}
+    time_delta = video2delta[video_name]
     labels_path = os.path.join(root, video_name, title)
     bbox_files = os.listdir(labels_path)
     label_idx_lst = []
@@ -17,17 +19,18 @@ def generate_detect_bbox(
         except ValueError:
             pass
     label_idx_lst.sort()
-    physical_start_frame = get_physical_start_frame_index(os.path.join(root, video_name, 'treebank'))
-    delta_frame_count = get_start_frame(
-        os.path.join(root, video_name, 'images_png'),
-        os.path.join(root, video_name, 'treebank', '0', 'images', str(physical_start_frame) + '.png')
-    )
-    start_frame = physical_start_frame - delta_frame_count
+    # physical_start_frame = get_physical_start_frame_index(os.path.join(root, video_name, 'treebank'))
+    # delta_frame_count = get_start_frame(
+    #     os.path.join(root, video_name, 'images_png'),
+    #     os.path.join(root, video_name, 'treebank', '0', 'images', str(physical_start_frame) + '.png')
+    # )
+    # start_frame = physical_start_frame - delta_frame_count
 
     detect_bbox = []
     for idx_r in label_idx_lst:
-        if (idx_r+start_frame) % frame_rate == 0:
-            idx = int((idx_r+start_frame) / frame_rate)
+        # if (idx_r+start_frame) % frame_rate == 0:
+        if idx_r % frame_rate == 0:
+            idx = int(idx_r / frame_rate) + time_delta
             image_id = 10000 * video_idx + idx
 
             with open(os.path.join(root, video_name, title, str(idx_r) + '.txt'), 'r') as f:
@@ -66,13 +69,14 @@ def main():
         'robalo',
         'sal'
     ]
-    out_root = '../data/LFV_training'
+    data_root = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                             'collaborative_manipulation_dataset')
     all_detect_bbox_dict = {}
     all_people_bbox_dict = {}
     for i in range(len(video_names)):
         name = video_names[i]
-        dbl = generate_detect_bbox(name, i, '.', 'labels')
-        pbl = generate_detect_bbox(name, i, '.', 'body_bb', global_category_id=1)
+        dbl = generate_detect_bbox(name, i, data_root, 'labels')
+        pbl = generate_detect_bbox(name, i, data_root, 's_body_bb', global_category_id=1)
         all_detect_bbox_dict[name] = dbl
         all_people_bbox_dict[name] = pbl
     print("Prepare finished.")
@@ -83,7 +87,7 @@ def main():
         for name2 in all_detect_bbox_dict:
             if name != name2:
                 train_det_obj_bbox.append(all_detect_bbox_dict[name2])
-        output_path = os.path.join(out_root, 'lfv_' + name, 'boxes')
+        output_path = os.path.join(data_root, name, 'boxes')
         with open(os.path.join(output_path, 'lfv_{}_train_det_object_bbox.json'.format(name)), 'w') as f:
             json.dump(train_det_obj_bbox, f)
         with open(os.path.join(output_path, 'lfv_{}_val_det_object_bbox.json'.format(name)), 'w') as f:
@@ -91,8 +95,6 @@ def main():
         with open(os.path.join(output_path, 'lfv_{}_val_det_person_bbox.json'.format(name)), 'w') as f:
             json.dump(val_det_person_bbox, f)
         print('LFV_{} dump finished.'.format(name))
-
-    a = 1
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ import argparse
 import subprocess
 
 
-def slice_movie_yuv(movie_path, clip_root, midframe_root="", start_sec=7, end_sec=318, targ_fps=25, targ_size=360):
+def slice_movie_yuv(movie_path, clip_root, midframe_root="", start_sec=5, end_sec=318, targ_fps=25, targ_size=360):
     # targ_fps should be int
     probe_args = ["ffprobe", "-show_format", "-show_streams", "-of", "json", movie_path]
     p = subprocess.Popen(probe_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

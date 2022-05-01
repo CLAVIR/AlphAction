@@ -75,27 +75,63 @@ def translate_label(data_dir, video_name, time_delta, frame_rate=25, frame_size=
         gt_info.append([time_stamps, person_acts])
 
     total_lst = []
-    for gt_line in gt_info:
-        start, end = gt_line[0]
-        person_acts = gt_line[1]
-
-        for i in range(start, end + 1):
-            if i % frame_rate == 0 and i in bodies:
-                file_name = '{}.txt'.format(i)
-                frame_body_path = os.path.join(body_path, file_name)
-                with open(frame_body_path, 'r') as f:
-                    body_lines = get_split_data(f.read())
-                for body_line in body_lines:
-                    info = get_split_data(body_line, ' ')
-                    person_id = info[0].replace('person', "")
-                    aabb = []
-                    for j in range(4):
-                        aabb.append(int(info[j + 1]) / float(frame_size[j % 2]))
+    # 1. We first find the start index and end index of annotation based on s_body_bb
+    num_frames = len(list(os.listdir(body_path))) - 1
+    start_frame = 0
+    end_frame = num_frames - 1
+    # 2. for each frame we add either an action or None if there is a human body
+    for frame_id in range(start_frame, end_frame + 1):
+        if frame_id % frame_rate != 0:
+            continue
+        file_name = '{}.txt'.format(frame_id)
+        frame_body_path = os.path.join(body_path, file_name)
+        with open(frame_body_path, 'r') as f:
+            body_lines = get_split_data(f.read())
+        for body_line in body_lines:
+            info = get_split_data(body_line, ' ')
+            person_id = info[0].replace('person', "")
+            aabb = []
+            for j in range(4):
+                aabb.append(int(info[j + 1]) / float(frame_size[j % 2]))
+            # for the person_id we try to find if there is an action for it
+            found_action = False
+            for gt_line in gt_info:
+                gt_start, gt_end = gt_line[0]
+                if frame_id >= gt_start and frame_id <= gt_end:
+                    person_acts = gt_line[1]
                     for pl in person_acts:
                         pid, act = pl
                         if person_id == pid:
-                            total_lst.append(
-                                [video_name, int(i / frame_rate) + time_delta, aabb, actions[act], person_id])
+                            total_lst.append([video_name, int(frame_id / frame_rate) + time_delta, aabb, actions[act],
+                                              person_id])
+                            found_action = True
+                            break
+                    if found_action:
+                        break
+            if not found_action:
+                total_lst.append([video_name, int(frame_id / frame_rate) + time_delta, aabb, actions['none'],
+                                  person_id])
+    # for gt_line in gt_info:
+    #     start, end = gt_line[0]
+    #     person_acts = gt_line[1]
+    #
+    #     for i in range(start, end + 1):
+    #         if i % frame_rate == 0 and i in bodies:
+    #             file_name = '{}.txt'.format(i)
+    #             frame_body_path = os.path.join(body_path, file_name)
+    #             with open(frame_body_path, 'r') as f:
+    #                 body_lines = get_split_data(f.read())
+    #             for body_line in body_lines:
+    #                 info = get_split_data(body_line, ' ')
+    #                 person_id = info[0].replace('person', "")
+    #                 aabb = []
+    #                 for j in range(4):
+    #                     aabb.append(int(info[j + 1]) / float(frame_size[j % 2]))
+    #                 for pl in person_acts:
+    #                     pid, act = pl
+    #                     if person_id == pid:
+    #                         total_lst.append(
+    #                             [video_name, int(i / frame_rate) + time_delta, aabb, actions[act], person_id])
 
     with open(os.path.join(data_dir, 'lfv_data_set.csv'), 'w') as f:
         for line in total_lst:
