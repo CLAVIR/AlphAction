@@ -79,7 +79,7 @@ def load_det_res(data_root_dir, video_name, gt):
     # first load detection results
     video_result = dict()
 
-    video_result_csv = osp.join(data_root_dir, 'output', 'resnet50_4x16f_baseline_{}_new'.format(video_name),
+    video_result_csv = osp.join(data_root_dir, 'output', 'resnet50_4x16f_baseline_{}_new_dense'.format(video_name),
                                 'inference', 'lfv_{}_val_ava_video'.format(video_name),
                                 'result.csv')
 
