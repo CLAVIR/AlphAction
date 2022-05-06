@@ -120,11 +120,13 @@ def format_tid(int_tid):
     return str_tid[1:]
 
 
-def get_action(action_det_lst, thres=0.1):
+def get_action(action_det_lst, thres=0.1, action_size=13):
     max_conf = 0
     detected_action = None
 
     for action_id, action_conf in action_det_lst:
+        if int(action_id) > action_size:
+            break
         if action_conf < thres:
             continue
         if action_conf > max_conf:

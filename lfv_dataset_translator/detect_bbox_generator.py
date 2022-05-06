@@ -1,6 +1,5 @@
 import os
 import json
-from lfv_dataset_translator.dataset_translator import get_physical_start_frame_index, get_start_frame
 
 
 def generate_detect_bbox(
@@ -19,12 +18,6 @@ def generate_detect_bbox(
         except ValueError:
             pass
     label_idx_lst.sort()
-    # physical_start_frame = get_physical_start_frame_index(os.path.join(root, video_name, 'treebank'))
-    # delta_frame_count = get_start_frame(
-    #     os.path.join(root, video_name, 'images_png'),
-    #     os.path.join(root, video_name, 'treebank', '0', 'images', str(physical_start_frame) + '.png')
-    # )
-    # start_frame = physical_start_frame - delta_frame_count
 
     detect_bbox = []
     for idx_r in label_idx_lst:
@@ -86,7 +79,7 @@ def main():
         val_det_obj_bbox = all_detect_bbox_dict[name]
         for name2 in all_detect_bbox_dict:
             if name != name2:
-                train_det_obj_bbox.append(all_detect_bbox_dict[name2])
+                train_det_obj_bbox.extend(all_detect_bbox_dict[name2])
         output_path = os.path.join(data_root, name, 'boxes')
         with open(os.path.join(output_path, 'lfv_{}_train_det_object_bbox.json'.format(name)), 'w') as f:
             json.dump(train_det_obj_bbox, f)

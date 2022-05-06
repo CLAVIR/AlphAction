@@ -58,4 +58,4 @@ TEST:
   BOX_THRESH: 0.8
   ACTION_THRESH: 0.
   VIDEOS_PER_BATCH: 16
-OUTPUT_DIR: "data/output/resnet50_4x16f_baseline_massa"
+OUTPUT_DIR: "data/output/resnet50_4x16f_baseline_massa_new"
