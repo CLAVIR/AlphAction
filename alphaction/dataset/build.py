@@ -5,6 +5,8 @@ import torch.utils.data
 from alphaction.utils.comm import get_world_size
 from alphaction.utils.IA_helper import has_object
 import alphaction.config.paths_catalog as paths_catalog
+import numpy as np
+import tqdm
 
 from . import datasets as D
 from . import samplers
@@ -69,10 +71,22 @@ def build_dataset(cfg, dataset_list, transforms, dataset_catalog, is_train=True,
     return [dataset]
 
 
-def make_data_sampler(dataset, shuffle, distributed):
+def make_weighted_random_sampler(dataset):
+    # first count classes
+    # import pdb
+    # pdb.set_trace()
+    samples_weight = torch.from_numpy(dataset.samples_weight)
+    # pdb.set_trace()
+    sampler = torch.utils.data.sampler.WeightedRandomSampler(samples_weight, len(samples_weight))
+    return sampler
+
+
+def make_data_sampler(dataset, shuffle, distributed, weighted):
     if distributed:
         return samplers.DistributedSampler(dataset, shuffle=shuffle)
-    if shuffle:
+    if weighted:
+        sampler = make_weighted_random_sampler(dataset)
+    elif shuffle:
         sampler = torch.utils.data.sampler.RandomSampler(dataset)
     else:
         sampler = torch.utils.data.sampler.SequentialSampler(dataset)
@@ -162,7 +176,13 @@ def make_data_loader(cfg, is_train=True, is_distributed=False, start_iter=0):
     # build sampler and dataloader
     data_loaders = []
     for dataset in datasets:
-        sampler = make_data_sampler(dataset, shuffle, is_distributed)
+        # hardcoded to weighted always being true
+        weighted = False
+        if is_train:
+            weighted = True
+        # import pdb
+        # pdb.set_trace()
+        sampler = make_data_sampler(dataset, shuffle, is_distributed, weighted=weighted)
         batch_sampler = make_batch_data_sampler(
             dataset, sampler, aspect_grouping, videos_per_gpu, num_iters, start_iter, drop_last
         )

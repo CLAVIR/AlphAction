@@ -79,7 +79,7 @@ def load_det_res(data_root_dir, video_name, gt):
     # first load detection results
     video_result = dict()
 
-    video_result_csv = osp.join(data_root_dir, 'output', 'resnet50_4x16f_baseline_{}'.format(video_name),
+    video_result_csv = osp.join(data_root_dir, 'output', 'resnet50_4x16f_baseline_{}_new'.format(video_name),
                                 'inference', 'lfv_{}_val_ava_video'.format(video_name),
                                 'result.csv')
 
@@ -94,6 +94,8 @@ def load_det_res(data_root_dir, video_name, gt):
             score = float(score)
 
             assert tid in gt
+            print(x_min, y_min, x_max, y_max)
+            print(tid)
             assert (x_min, y_min, x_max, y_max) in gt[tid]
 
             # first we get the corresponding pid
@@ -158,7 +160,9 @@ def create_seg_det_results(video_seg, video_result, action_id_name_map, video_na
                             max_count_action = action_count[action]
                             pid_action = action
             if pid_action is not None:
-                if (seg_start, seg_end) not in final_results:
+                if (
+                        seg_start - 25 * video2delta[video_name],
+                        seg_end - 25 * video2delta[video_name]) not in final_results:
                     final_results[(seg_start - 25 * video2delta[video_name],
                                    seg_end - 25 * video2delta[video_name])] = {pid: action_id_name_map[pid_action]}
                 else:
@@ -340,7 +344,8 @@ def load_our_video_segmentation(video_seg_path, root, video_name, frame_rate=25)
 
 def compute_accuracy(gt_action_seq, detected_action_seq):
     num_gt_trees = len(gt_action_seq)
-    num_detected_trees = len(detected_action_seq)
+    num_detected_trees = len([detected_action[1] for detected_action in
+                              detected_action_seq if detected_action[2][1] != {'none'}])
 
     print("Number of gt trees: {}".format(num_gt_trees))
     print("Number of detected trees: {}".format(num_detected_trees))

@@ -9,6 +9,7 @@ from alphaction.utils.video_decode import av_decode_video
 
 import json
 
+
 # This is used to avoid pytorch issuse #13246
 class NpInfoDict(object):
     def __init__(self, info_dict, key_type=None, value_type=None):
@@ -16,15 +17,19 @@ class NpInfoDict(object):
         self.key_arr = np.array(keys, dtype=key_type)
         self.val_arr = np.array([info_dict[k] for k in keys], dtype=value_type)
         # should not be used in dataset __getitem__
-        self._key_idx_map = {k:i for i,k in enumerate(keys)}
+        self._key_idx_map = {k: i for i, k in enumerate(keys)}
+
     def __getitem__(self, idx):
         return self.key_arr[idx], self.val_arr[idx]
+
     def __len__(self):
         return len(self.key_arr)
+
     def convert_key(self, org_key):
         # convert relevant variable whose original value is in the key set.
         # should not be used in __getitem__
         return self._key_idx_map[org_key]
+
 
 # This is used to avoid pytorch issuse #13246
 class NpBoxDict(object):
@@ -61,10 +66,11 @@ class NpBoxDict(object):
     def __len__(self):
         return self.length
 
-class AVAVideoDataset(data.Dataset):
-    def __init__(self, video_root, ann_file, remove_clips_without_annotations, frame_span, box_file=None, eval_file_paths={},
-                 box_thresh=0.0, action_thresh=0.0, transforms=None, object_file=None, object_transforms=None,):
 
+class AVAVideoDataset(data.Dataset):
+    def __init__(self, video_root, ann_file, remove_clips_without_annotations, frame_span, box_file=None,
+                 eval_file_paths={},
+                 box_thresh=0.0, action_thresh=0.0, transforms=None, object_file=None, object_transforms=None, ):
         print('loading annotations into memory...')
         tic = time.time()
         json_dict = json.load(open(ann_file, 'r'))
@@ -96,6 +102,7 @@ class AVAVideoDataset(data.Dataset):
             if mov not in movies_size:
                 movies_size[mov] = [img["width"], img["height"]]
             clips_info[img["id"]] = [mov, img["timestamp"]]
+
         self.movie_info = NpInfoDict(movies_size, value_type=np.int32)
         clip_ids = sorted(list(clips_info.keys()))
 
@@ -137,8 +144,25 @@ class AVAVideoDataset(data.Dataset):
                     clips_info[clip_id][1]
                 ] for clip_id in clip_ids
         }
+
         self.clips_info = NpInfoDict(clips_info, value_type=np.int32)
 
+        # counts the weights for balance the training data
+        clip_action_counts = {}
+        clip_action_weights = {}
+        for idx in range(len(clips_info)):
+            # import pdb
+            # pdb.set_trace()
+            boxes, packed_act = self.anns[idx]
+            if packed_act.tostring() in clip_action_counts:
+                clip_action_counts[packed_act.tostring()] += 1
+            else:
+                clip_action_counts[packed_act.tostring()] = 1
+        for packed_act_str in clip_action_counts:
+            clip_action_weights[packed_act_str] = 1. / clip_action_counts[packed_act_str]
+
+        self.samples_weight = np.array([clip_action_weights[self.anns[idx][1].tostring()]
+                                        for idx in range(len(clips_info))])
 
     def __getitem__(self, idx):
 
@@ -243,34 +267,34 @@ class AVAVideoDataset(data.Dataset):
         # decode target video data from segment per second.
 
         video_folder = os.path.join(self.video_root, dirname)
-        right_span = self.frame_span//2
+        right_span = self.frame_span // 2
         left_span = self.frame_span - right_span
 
-        #load right
+        # load right
         cur_t = timestamp
         right_frames = []
-        while len(right_frames)<right_span:
+        while len(right_frames) < right_span:
             video_path = os.path.join(video_folder, "{}.mp4".format(cur_t))
             # frames = cv2_decode_video(video_path)
             frames = av_decode_video(video_path)
-            if len(frames)==0:
+            if len(frames) == 0:
                 raise RuntimeError("Video {} cannot be decoded.".format(video_path))
-            right_frames = right_frames+frames
+            right_frames = right_frames + frames
             cur_t += 1
 
-        #load left
-        cur_t = timestamp-1
+        # load left
+        cur_t = timestamp - 1
         left_frames = []
-        while len(left_frames)<left_span:
+        while len(left_frames) < left_span:
             video_path = os.path.join(video_folder, "{}.mp4".format(cur_t))
             # frames = cv2_decode_video(video_path)
             frames = av_decode_video(video_path)
-            if len(frames)==0:
+            if len(frames) == 0:
                 raise RuntimeError("Video {} cannot be decoded.".format(video_path))
-            left_frames = frames+left_frames
+            left_frames = frames + left_frames
             cur_t -= 1
 
-        #adjust key frame to center, usually no need
+        # adjust key frame to center, usually no need
         min_frame_num = min(len(left_frames), len(right_frames))
         frames = left_frames[-min_frame_num:] + right_frames[:min_frame_num]
 
